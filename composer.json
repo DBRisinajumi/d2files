@@ -1,0 +1,17 @@
+{
+    "name": "dbrisinajumi/d2files",
+    "description": "file uploader",
+    "keywords": ["files","uploader","widget","yii","phundament"],
+    "type": "yii-extension",
+    "license": "BSD-2-Clause",
+    "authors": [
+        {
+            "name": "Uldis Nelsons",
+            "email": "uldisnelsons@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "blueimp/jQuery-File-Upload": "9.5.*"
+    }
+}

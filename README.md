@@ -7,8 +7,10 @@
 * widget for model view
 
 ## Installation
+ * install https://github.com/blueimp/jQuery-File-Upload?source=c
  * install https://github.com/DBRisinajumi/d2files.git
  * add to config/main.php
+```php
      'import' => array(
         'vendor.dbrisinajumi.d1files.models.*',
     ),
@@ -18,7 +20,7 @@
              'upload_dir' => 'root.upload',
          ),  
 	 ),
-
+```
 
 ## Usage
 ### controler
