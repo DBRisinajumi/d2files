@@ -36,7 +36,7 @@ class d1Upload extends CWidget {
         $baseUrl = Yii::app()->baseUrl; 
         
         //blueimp/jQuery-File-Upload scripts
-        $assetsPath = Yii::getPathOfAlias('vendor.blueimp.jQuery-File-Upload');
+        $assetsPath = Yii::getPathOfAlias('vendor.blueimp.jquery-file-upload');
         $cs = Yii::app()->getClientScript();
         $am = Yii::app()->assetManager;
         $cs->registerScriptFile($am->publish($assetsPath.'/js/vendor/jquery.ui.widget.js'));
