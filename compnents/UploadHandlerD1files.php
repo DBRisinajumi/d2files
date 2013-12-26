@@ -2,7 +2,7 @@
 /**
  * extended UploadHandler 
  */
-Yii::import('vendor.blueimp.jQuery-File-Upload.server.php.UploadHandler');
+Yii::import('vendor.blueimp.jquery-file-upload.server.php.UploadHandler');
 class UploadHandlerD1files extends UploadHandler {
 
     function __construct($options = null) {
