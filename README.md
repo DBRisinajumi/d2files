@@ -9,6 +9,10 @@
 ## Installation
  * install https://github.com/blueimp/jQuery-File-Upload?source=c
  * install https://github.com/DBRisinajumi/d2files.git
+```bash
+php composer.phar require dbrisinajumi/d1files dev-master
+```
+
  * add to config/main.php
 ```php
      'import' => array(
@@ -24,6 +28,8 @@
 
 ## Usage
 ### controler
+* add to access rules follow actions: 'upload','deleteFile','downloadFile'
+* add actions
 ```php
 <?php
 

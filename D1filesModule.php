@@ -3,6 +3,7 @@
 class D1filesModule extends CWebModule
 {
     public $upload_dir;
+    public $accept_file_types = '/\.(gif|pdf|dat|jpe?g|png)$/i';
     
 	public function init()
 	{

@@ -9,6 +9,8 @@ class UploadHandlerD1files extends UploadHandler {
         
         //izveido direktoriju
         $options['upload_dir'] = self::getUploadDirPath($options['model_name']); 
+        $options['accept_file_types'] = Yii::app()->getModule('d1files')->accept_file_types; 
+        
         
         //lai netaisa thumb...
         $options['image_versions'] = array();
