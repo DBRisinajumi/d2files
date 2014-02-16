@@ -21,9 +21,13 @@ class D1files extends BaseD1files {
 
     public function behaviors() {
         return array_merge(
-                parent::behaviors(), array()
-        );
-    }
+                parent::behaviors(), array(
+             //auditrail       
+            'LoggableBehavior' => array(
+                'class' => 'LoggableBehavior'
+            ),
+        ));
+    }  
 
     public function rules() {
         return parent::rules();
