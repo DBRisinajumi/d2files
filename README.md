@@ -10,17 +10,17 @@
  * install https://github.com/blueimp/jQuery-File-Upload?source=c
  * install https://github.com/DBRisinajumi/d2files.git
 ```bash
-php composer.phar require dbrisinajumi/d1files dev-master
+php composer.phar require dbrisinajumi/d2files dev-master
 ```
 
  * add to config/main.php
 ```php
      'import' => array(
-        'vendor.dbrisinajumi.d1files.models.*',
+        'vendor.dbrisinajumi.d2files.models.*',
     ),
     'modules' => array(
-        'd1files' => array(
-             'class' => 'vendor.dbrisinajumi.d1files.D1filesModule',
+        'd2files' => array(
+             'class' => 'vendor.dbrisinajumi.d2files.D1filesModule',
              'upload_dir' => 'root.upload',
          ),  
 	 ),
@@ -35,7 +35,7 @@ php composer.phar require dbrisinajumi/d1files dev-master
 
     public function actionUpload($model_id ) {
 
-        Yii::import( "vendor.dbrisinajumi.d1files.compnents.*");
+        Yii::import( "vendor.dbrisinajumi.d2files.compnents.*");
         $oUploadHandler = new UploadHandlerD1files(
                         array(
                             'model_name' => 'model....',
@@ -47,7 +47,7 @@ php composer.phar require dbrisinajumi/d1files dev-master
     }
 
     public function actionDeleteFile($id) {
-        Yii::import( "vendor.dbrisinajumi.d1files.compnents.*");        
+        Yii::import( "vendor.dbrisinajumi.d2files.compnents.*");        
         UploadHandlerD1files::deleteFile($id);
     }
 
@@ -56,10 +56,10 @@ php composer.phar require dbrisinajumi/d1files dev-master
         $m = D1files::model();
         $model = $m->findByPk($id);
         if ($model === null) {
-            throw new CHttpException(404, 'The requested record in d1files does not exist.');
+            throw new CHttpException(404, 'The requested record in d2files does not exist.');
         }
         
-        Yii::import( "vendor.dbrisinajumi.d1files.compnents.*");
+        Yii::import( "vendor.dbrisinajumi.d2files.compnents.*");
         $oUploadHandler = new UploadHandlerD1files(
                         array(
                             'model_name' => 'model....',
@@ -83,7 +83,7 @@ php composer.phar require dbrisinajumi/d1files dev-master
                     'label' => Yii::t('FuelingModule.crud', 'Attachments'),
                     'type'   => 'raw',
                     'template'   =>  $this->widget(
-                                        'vendor.dbrisinajumi.d1files.widgets.d1Upload',
+                                        'vendor.dbrisinajumi.d2files.widgets.d1Upload',
                                         array(
                                             'controler' => $this,
                                             'model_id' => $model->getPrimaryKey(),
