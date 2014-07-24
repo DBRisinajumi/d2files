@@ -1,6 +1,6 @@
 <?php
 
-class D1filesModule extends CWebModule
+class D2filesModule extends CWebModule
 {
     public $upload_dir;
     public $accept_file_types = '/\.(gif|pdf|dat|jpe?g|png)$/i';
@@ -12,8 +12,8 @@ class D1filesModule extends CWebModule
 
 		// import the module-level models and components
 		$this->setImport(array(
-			'd1files.models.*',
-			'd1files.components.*',
+			'd2files.models.*',
+			'd2files.components.*',
 		));
 	}
 
