@@ -41,9 +41,15 @@ class UploadHandlerD2files extends UploadHandler {
     }
     
     public function post($print_response = true) {
-        if (isset($_REQUEST['_method']) && $_REQUEST['_method'] === 'DELETE') {
-            return $this->delete($print_response);
+        //if (isset($_REQUEST['_method']) && $_REQUEST['_method'] === 'DELETE') {
+        //    return $this->delete($print_response);
+        //}
+        
+        // validate create action access
+        if (!Yii::app()->user->checkAccess($this->options['model_name'] . '.create')) {
+            throw new CHttpException(403, Yii::t("D2filesModule.model","You are not authorized to perform this action."));
         }
+        
         $upload = isset($_FILES[$this->options['param_name']]) ?
                 $_FILES[$this->options['param_name']] : null;
         // Parse the Content-Disposition header, if available:

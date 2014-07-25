@@ -107,6 +107,10 @@ class D2filesController extends Controller {
     }
     
     public function actionUpload($model_name, $model_id) {
+        
+        if (!$this->performReadValidation($model_name, $model_id)) {
+            throw new CHttpException(403, Yii::t("D2filesModule.model","You are not authorized to perform this action."));
+        }
 
         Yii::import("vendor.dbrisinajumi.d2files.compnents.*");
         $oUploadHandler = new UploadHandlerD2files(
@@ -121,16 +125,40 @@ class D2filesController extends Controller {
     }
     
     public function actionDeleteFile($id) {
-        Yii::import("vendor.dbrisinajumi.d2files.compnents.*");        
-        UploadHandlerD2files::deleteFile($id);
+        
+        $m = D2files::model();
+        $model = $m->findByPk($id);
+        if ($model === null) {
+            throw new CHttpException(404, 'The requested record in d2files does not exist.');
+        }
+        
+        // validate read access
+        if (!$this->performReadValidation($model->model, $model->model_id)) {
+            throw new CHttpException(403, Yii::t("D2filesModule.model","You are not authorized to perform this action."));
+        }
+        
+        // validate delete action access
+        if (!Yii::app()->user->checkAccess($model->model . '.delete')) {
+            throw new CHttpException(403, Yii::t("D2filesModule.model","You are not authorized to perform this action."));
+        }
+        
+        $model->deleted = 1;
+        $model->save();
+        
     }
 
     public function actionDownloadFile($id) {
         
         $m = D2files::model();
+        $model_files->deleted = 0;
         $model = $m->findByPk($id);
         if ($model === null) {
             throw new CHttpException(404, 'The requested record does not exist.');
+        }
+        
+        // validate read access
+        if (!$this->performReadValidation($model->model, $model->model_id)) {
+            throw new CHttpException(403, Yii::t("D2filesModule.model","You are not authorized to perform this action."));
         }
         
         Yii::import( "vendor.dbrisinajumi.d2files.compnents.*");
@@ -204,6 +232,17 @@ class D2filesController extends Controller {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }
+    }
+    
+    protected function performReadValidation($model_name, $model_id)
+    {
+        list($module_name, $model_name) = explode('.', $model_name);
+        $m = $model_name::model();
+        $modelMain = $m->findByPk($model_id);
+        if ($modelMain === null) {
+            return false;
+        }
+        return true;
     }
 
 }

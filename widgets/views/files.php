@@ -1,7 +1,3 @@
-<?php
-
-?>
-
 <div class="table-header">
 <?php echo Yii::t('D2filesModule.crud_static', 'Attachments'); ?>
 </div>
@@ -18,7 +14,7 @@
                     'vendor.dbrisinajumi.d2files.widgets.d2Upload',
                     array(
                         'action' => 'template',
-                        'model_name'=> get_class($model),
+                        'model_name'=> $model_name,
                         //'model_name'=> Yii::app()->controller->id,
                         'model_id' => $model->getPrimaryKey(),
                         'controler' => $controller,

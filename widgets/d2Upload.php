@@ -26,6 +26,7 @@ class d2Upload extends CWidget {
 
         $this->render($this->template_view,array(
             'files' => $files,
+            'model' => $model_files->model
         ));                
 
         
@@ -48,7 +49,10 @@ class d2Upload extends CWidget {
             'model_name' => $this->model_name,
             'model_id' => $this->model_id,
         ));
-        $file_delete_ajax_url = $this->controler->createUrl('deleteFile');        
+        $file_delete_ajax_url = '';
+        if (Yii::app()->user->checkAccess($this->model_name . '.delete')) {
+            $file_delete_ajax_url = '+ \'<a href="'.$this->controler->createUrl('deleteFile').'&id=\'+file.id+\'" rel="tooltip" title="'.Yii::t("D2filesModule.crud_static","Delete").'" class="delete" data-toggle="tooltip"><i class="icon-trash"></i></a> \'';
+        }
         $file_download_ajax_url = $this->controler->createUrl('downloadFile');        
         Yii::app()->clientScript->registerScript('for_fileupload','
                 $("#fileupload").hide();
@@ -65,8 +69,8 @@ class d2Upload extends CWidget {
                             var sRow = 
                             \'<tr><td><i class="icon-file-text blue"></i> \' + file.name + \'</a></td>\'
                             + \'<td class="button-column">\'
-                            + \'<a href="'.$file_delete_ajax_url.'&id=\'+file.id+\'" rel="tooltip" title="'.Yii::t("D2finvModule.crud_static","Delete").'" class="delete" data-toggle="tooltip"><i class="icon-trash"></i></a> \'
-                            + \'<a href="'.$file_download_ajax_url.'&id=\'+file.id+\'" rel="tooltip" title="'.Yii::t("D2finvModule.crud_static","Download").'" class="download" data-toggle="tooltip"><i class="icon-download-alt"></i></a>\'
+                            + \'<a href="'.$file_download_ajax_url.'&id=\'+file.id+\'" rel="tooltip" title="'.Yii::t("D2filesModule.crud_static","Download").'" class="download" data-toggle="tooltip"><i class="icon-download-alt"></i></a> \'
+                            ' . $file_delete_ajax_url . '
                             + \'</td>\'
                             + \'</tr>\'
                             ;
@@ -80,7 +84,7 @@ class d2Upload extends CWidget {
                     }
             });
             $("#attachment_list").on( "click", "a.delete", function() {
-                if (!confirm("'.Yii::t("D2finvModule.crud","Do you want to delete this item?").'")) {
+                if (!confirm("'.Yii::t("D2filesModule.crud","Do you want to delete this item?").'")) {
                     return false;
                 }
                 var elTr = $(this).parent().parent();

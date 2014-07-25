@@ -40,4 +40,5 @@ return array (
   'tooltip.type' => '',
   'tooltip.upload_path' => '',
   'tooltip.user_id' => '',
+  'You are not authorized to perform this action.' => '',
 );
