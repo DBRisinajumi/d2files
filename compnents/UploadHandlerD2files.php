@@ -27,13 +27,16 @@ class UploadHandlerD2files extends UploadHandler {
         
     }
     
-    static function deleteFile($id){
+    static function deleteFile($id, $notes = null){
         $m = D2files::model();
         $model = $m->findByPk($id);
         if ($model === null) {
             throw new CHttpException(404, 'The requested record in d2files does not exist.');
         }
         $model->deleted = 1;
+        if ($notes) {
+            $model->notes = $notes;
+        }
         $model->save();
     }
     
@@ -79,7 +82,7 @@ class UploadHandlerD2files extends UploadHandler {
                         $content_range
                 );
                 if (!empty($info[count($info) - 1]->error)) {
-                    $this->deleteFile($nFileId);
+                    $this->deleteFile($nFileId, 'Error: ' . $info[count($info) - 1]->error);
                 } else {
                     $info[count($info) - 1]->name = $sFileName;
                     $info[count($info) - 1]->id = $nFileId;
@@ -97,8 +100,12 @@ class UploadHandlerD2files extends UploadHandler {
                     isset($upload['tmp_name']) ? $upload['tmp_name'] : null, $file_name, $size ? $size : (isset($upload['size']) ? $upload['size'] :
                                     $_SERVER['CONTENT_LENGTH']), $file_type ? $file_type : (isset($upload['type']) ? $upload['type'] : $_SERVER['CONTENT_TYPE']), isset($upload['error']) ? $upload['error'] : null, null, $content_range
             );
-            $info[count($info) - 1]->name = $sFileName;
-            $info[count($info) - 1]->d_file_id = $nFileId;
+            if (!empty($info[count($info) - 1]->error)) {
+                $this->deleteFile($nFileId, 'Error: ' . $info[count($info) - 1]->error);
+            } else {
+                $info[count($info) - 1]->name = $sFileName;
+                $info[count($info) - 1]->id = $nFileId;
+            }
 
         }
         return $this->generate_response($info, $print_response);

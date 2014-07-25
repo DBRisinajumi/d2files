@@ -17,14 +17,15 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Add file' => '',
-  'Attachments' => '',
-  'Download' => '',
+  'Add file' => 'Pievieno failu',
+  'Attachments' => 'Pielikumi',
+  'Download' => 'Lejuplādēt',
+  'Drop files to upload' => 'Ievelc failu, lai augšuplādētu',
   'Cancel' => 'Atcelt',
   'Create' => 'Izveidot',
   'Data' => 'Dati',
   'Delete' => 'Dzēst',
-  'Fields with <span class="required">*</span> are required.' => 'Atzīmētie ar <span class="required">*</span> ir obligāti.',
+  'Fields with <span class="required">*</span> are required.' => 'Ar <span class="required">*</span> atzīmētie lauki jāaizpilda obligāti.',
   'Invalid request. Please do not repeat this request again.' => 'Kļūdains pieprasījums.',
   'Manage' => 'Saraksts',
   'Relations' => 'Relācijas',

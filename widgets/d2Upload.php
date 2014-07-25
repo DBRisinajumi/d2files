@@ -22,7 +22,7 @@ class d2Upload extends CWidget {
         $model_files->model = $this->model_name;
         $model_files->model_id = $this->model_id;
         $model_files->deleted = 0;
-        $files = $model_files->findAll($model_files->searchCriteria());
+        $files = $model_files->findAll($model_files->searchExactCriteria());
 
         $this->render($this->template_view,array(
             'files' => $files,
@@ -58,11 +58,15 @@ class d2Upload extends CWidget {
                     dropZone : "tr.dropZone",
                     done: function (e, data) {
                         $.each(data.result, function (index, file) {
+                            if (file.error != undefined && file.error != "") {
+                                alert(file.error);
+                                return;
+                            }
                             var sRow = 
-                            "<tr><td>" + file.name + "</a></td>"
+                            \'<tr><td><i class="icon-file-text blue"></i> \' + file.name + \'</a></td>\'
                             + \'<td class="button-column">\'
-                            + \'<a href="'.$file_delete_ajax_url.'&id=\'+file.id+\'" rel="tooltip" title="'.Yii::t("D2finvModule.crud_static","Delete").'" class="delete"><i class="icon-trash"></i></a>\'
-                            + \'<a href="'.$file_download_ajax_url.'&id=\'+file.id+\'" rel="tooltip" title="'.Yii::t("D2finvModule.crud_static","Download").'" class="download"><i class="icon-circle-arrow-up"></i></a>\'
+                            + \'<a href="'.$file_delete_ajax_url.'&id=\'+file.id+\'" rel="tooltip" title="'.Yii::t("D2finvModule.crud_static","Delete").'" class="delete" data-toggle="tooltip"><i class="icon-trash"></i></a> \'
+                            + \'<a href="'.$file_download_ajax_url.'&id=\'+file.id+\'" rel="tooltip" title="'.Yii::t("D2finvModule.crud_static","Download").'" class="download" data-toggle="tooltip"><i class="icon-download-alt"></i></a>\'
                             + \'</td>\'
                             + \'</tr>\'
                             ;
@@ -76,6 +80,9 @@ class d2Upload extends CWidget {
                     }
             });
             $("#attachment_list").on( "click", "a.delete", function() {
+                if (!confirm("'.Yii::t("D2finvModule.crud","Do you want to delete this item?").'")) {
+                    return false;
+                }
                 var elTr = $(this).parent().parent();
                 $.ajax({
                   type: "POST",
@@ -86,7 +93,7 @@ class d2Upload extends CWidget {
                   }
                 });
                 return false; // stop the browser following the link
-              });
+            });
             '
         );
       

@@ -10,10 +10,10 @@
             ));
 
             $sFileListHtml .= '<tr>'
-                    . '<td>'.$mfile->file_name.'</td>'
+                    . '<td><i class="icon-file-text blue"></i> '.$mfile->file_name.'</td>'
                     . '<td class="button-column">'
-                    . '<a href="'.$file_delete_ajax_url.'" rel="tooltip" title="'.Yii::t("D2filesModule.crud_static","Delete").'" class="delete"><i class="icon-trash"></i></a>'
-                    . '<a href="'.$file_download_ajax_url.'" rel="tooltip" title="'.Yii::t("D2filesModule.crud_static","Download").'" class="download"><i class="icon-circle-arrow-up"></i></i></a>'
+                    . '<a href="'.$file_delete_ajax_url.'" rel="tooltip" title="'.Yii::t("D2filesModule.crud_static","Delete").'" class="delete" data-toggle="tooltip"><i class="icon-trash"></i></a> '
+                    . '<a href="'.$file_download_ajax_url.'" rel="tooltip" title="'.Yii::t("D2filesModule.crud_static","Download").'" class="download" data-toggle="tooltip"><i class="icon-download-alt"></i></i></a>'
                     . '</td>'
                     . '</tr>';
         }
@@ -23,4 +23,4 @@
                                 '.$sFileListHtml.'
                                 </form>';
         
-        echo "<tr class=\"dropZone\"><th>{label}</th><td>{value}</td></tr>\n<tr class=\"dropZone\"><td colspan=\"2\">".$file_form."</td></tr>\n";
+        echo "<tr class=\"dropZone\" style=\"border: 3px dashed #ccc;\"><th style=\"vertical-align: middle; width: 220px; padding-left:10px;\"><span class=\"bigger-110 bolder\"><i class=\"icon-cloud-upload grey\"></i> {label}</span></th><td>{value}</td></tr>\n<tr class=\"dropZone\"><td colspan=\"2\">".$file_form."</td></tr>\n";

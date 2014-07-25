@@ -87,5 +87,27 @@ class D2files extends BaseD2files {
             Yii::app()->user->setState('images', null);
         }
     }
+    
+    public function searchExactCriteria($criteria = null)
+    {
+        if (is_null($criteria)) {
+            $criteria = new CDbCriteria;
+        }
+
+        $criteria->compare('t.id', $this->id);
+        $criteria->compare('t.type', $this->type);
+        $criteria->compare('t.file_name', $this->file_name);
+        $criteria->compare('t.upload_path', $this->upload_path);
+        $criteria->compare('t.add_datetime', $this->add_datetime);
+        $criteria->compare('t.user_id', $this->user_id);
+        $criteria->compare('t.deleted', $this->deleted);
+        $criteria->compare('t.notes', $this->notes);
+        $criteria->compare('t.model', $this->model);
+        $criteria->compare('t.model_id', $this->model_id);
+
+
+        return $criteria;
+
+    }
 
 }

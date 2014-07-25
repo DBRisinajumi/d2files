@@ -24,6 +24,7 @@ return array (
   'Data' => '',
   'Delete' => '',
   'Download' => '',
+  'Drop files to upload' => '',
   'Fields with <span class="required">*</span> are required.' => '',
   'Invalid request. Please do not repeat this request again.' => '',
   'Manage' => '',
