@@ -149,9 +149,10 @@ class D2filesController extends Controller {
 
     public function actionDownloadFile($id) {
         
+        $criteria = new CDbCriteria;
+        $criteria->compare('t.deleted', 0);
         $m = D2files::model();
-        $model_files->deleted = 0;
-        $model = $m->findByPk($id);
+        $model = $m->findByPk($id, $criteria);
         if ($model === null) {
             throw new CHttpException(404, 'The requested record does not exist.');
         }
