@@ -41,4 +41,5 @@ return array (
   'tooltip.upload_path' => '',
   'tooltip.user_id' => '',
   'You are not authorized to perform this action.' => 'Jūs neesat autorizēts veikt šo darbību.',
+  'The requested record does not exist.' => 'Pieprasītais ieraksts neeksistē.',
 );

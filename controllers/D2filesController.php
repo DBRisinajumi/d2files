@@ -129,7 +129,7 @@ class D2filesController extends Controller {
         $m = D2files::model();
         $model = $m->findByPk($id);
         if ($model === null) {
-            throw new CHttpException(404, 'The requested record in d2files does not exist.');
+            throw new CHttpException(404, Yii::t("D2filesModule.model","The requested record does not exist."));
         }
         
         // validate read access
@@ -154,7 +154,7 @@ class D2filesController extends Controller {
         $m = D2files::model();
         $model = $m->findByPk($id, $criteria);
         if ($model === null) {
-            throw new CHttpException(404, 'The requested record does not exist.');
+            throw new CHttpException(404, Yii::t("D2filesModule.model","The requested record does not exist."));
         }
         
         // validate read access

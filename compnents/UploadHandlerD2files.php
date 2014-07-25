@@ -31,7 +31,7 @@ class UploadHandlerD2files extends UploadHandler {
         $m = D2files::model();
         $model = $m->findByPk($id);
         if ($model === null) {
-            throw new CHttpException(404, 'The requested record in d2files does not exist.');
+            throw new CHttpException(404, Yii::t("D2filesModule.model","The requested record does not exist."));
         }
         $model->deleted = 1;
         if ($notes) {
