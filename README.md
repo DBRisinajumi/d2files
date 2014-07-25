@@ -31,5 +31,5 @@ php composer.phar require dbrisinajumi/d2files dev-master
 ## Usage
 ### VIEW
 ```php
-    $this->widget('d2FilesWidget',array('model'=>$model));
+    $this->widget('d2FilesWidget',array('module'=>$this->module->id, 'model'=>$model));
 ```
