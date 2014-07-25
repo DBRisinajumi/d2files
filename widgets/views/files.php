@@ -1,8 +1,5 @@
 <?php
-Yii::import('vendor.dbrisinajumi.d2files.D2filesModule');
-Yii::import('vendor.dbrisinajumi.d2files.controllers.D2filesController');
 
-$D2FilesControler = new D2filesController('d2files/d2files');
 ?>
 
 <div class="table-header">
@@ -24,7 +21,7 @@ $D2FilesControler = new D2filesController('d2files/d2files');
                         'model_name'=> get_class($model),
                         //'model_name'=> Yii::app()->controller->id,
                         'model_id' => $model->getPrimaryKey(),
-                        'controler' => $D2FilesControler,
+                        'controler' => $controller,
 
 
                         ),
