@@ -1,4 +1,5 @@
 <div class="table-header">
+    <i class="icon-paperclip"></i>
 <?php echo Yii::t('D2filesModule.crud_static', 'Attachments'); ?>
 </div>
 <?php
