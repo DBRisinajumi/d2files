@@ -45,7 +45,8 @@ abstract class BaseD2files extends CActiveRecord
                 array('user_id, deleted', 'numerical', 'integerOnly' => true),
                 array('type', 'length', 'max' => 8),
                 array('file_name', 'length', 'max' => 255),
-                array('model, model_id', 'length', 'max' => 20),
+                array('model', 'length', 'max'=>50),
+                array('model_id', 'length', 'max'=>20),
                 array('notes', 'safe'),
                 array('id, type, file_name, upload_path, add_datetime, user_id, deleted, notes, model, model_id', 'safe', 'on' => 'search'),
             )

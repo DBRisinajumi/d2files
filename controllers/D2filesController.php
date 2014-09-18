@@ -19,9 +19,9 @@ class D2filesController extends Controller {
                 'users'=>array('?'),
             ),
             array(
-                'allow', // allow main screen only to Admin
+                'allow', // allow main screen only to Administrator
                 'actions' => array('create', 'admin', 'view', 'update', 'editableSaver', 'delete'),
-                'roles' => array('Admin'),
+                'roles' => array('Administrator'),
             ),
             array(
                 'allow', // allow actions controled by related model to registred users

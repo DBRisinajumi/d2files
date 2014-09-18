@@ -119,7 +119,7 @@ class UploadHandlerD2files extends UploadHandler {
     
     static function createSaveFileName($d2files_id, $file_name) {
         $a = explode('.',$file_name);
-        return 'd1_' . $d2files_id . '.' . array_pop($a);
+        return 'd2_' . $d2files_id . '.' . array_pop($a);
     }
 
     /**
