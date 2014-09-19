@@ -10,7 +10,7 @@ class m140919_014800_alter_table_d2files extends CDbMigration
 	{
 
 		$this->execute("
-            ALTER TABLE `d2files` CHANGE `model` `model` VARCHAR( 50 ) NOT NULL;
+            ALTER TABLE `d2files` CHANGE `model` `model` VARCHAR( 255 ) NOT NULL;
         ");
         
 	}
