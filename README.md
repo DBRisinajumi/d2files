@@ -33,3 +33,8 @@ php composer.phar require dbrisinajumi/d2files dev-master
 ```php
     $this->widget('d2FilesWidget',array('module'=>$this->module->id, 'model'=>$model));
 ```
+
+### Requirements
+* To upload file user must have "ModuleName.ModelName.create" access rights for caller module
+* To delete file user must have "ModuleName.ModelName.delete" access rights for caller module
+* To download, upload or delete file user must have read access to corresponding item it is attached to
