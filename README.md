@@ -46,6 +46,22 @@ php composer.phar require dbrisinajumi/d2files dev-master
 ```
 
 ### Requirements
-* To upload file user must have "ModuleName.ModelName.create" access rights for caller module
-* To delete file user must have "ModuleName.ModelName.delete" access rights for caller module
-* To download, upload or delete file user must have read access to corresponding item it is attached to
+* To upload file user must have "ModuleName.ModelName.uploadD2File" access rights for caller module
+* To delete file user must have "ModuleName.ModelName.deleteD2File" access rights for caller module
+* To download, upload or delete file user must have read access to corresponding item it is attached to 
+ and "ModuleName.ModelName.downloadD2File"
+
+### sql statement example for giving access
+
+    INSERT INTO `authitem` 
+    (`name`, `type`, `description`, `bizrule`, `data`) 
+    VALUES
+    ('D2company.CcmpCompany.uploadD2File','0','D2company.CcmpCompany upolad D2Files',NULL,'N;'),
+    ('D2company.CcmpCompany.downloadD2File','0','D2company.CcmpCompany downloas D2Files',NULL,'N;'),
+    ('D2company.CcmpCompany.deleteD2File','0','D2company.CcmpCompany delete D2Files',NULL,'N;')
+    ;
+
+    INSERT INTO `authitemchild` (`parent`, `child`) VALUES ('Agent', 'D2company.CcmpCompany.uploadD2File'); 
+    INSERT INTO `authitemchild` (`parent`, `child`) VALUES ('Agent', 'D2company.CcmpCompany.downloadD2File'); 
+    INSERT INTO `authitemchild` (`parent`, `child`) VALUES ('Agent', 'D2company.CcmpCompany.deleteD2File'); 
+

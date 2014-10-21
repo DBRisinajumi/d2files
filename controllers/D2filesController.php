@@ -108,6 +108,11 @@ class D2filesController extends Controller {
     
     public function actionUpload($model_name, $model_id) {
         
+        // validate download action access
+        if (!Yii::app()->user->checkAccess($model_name . '.uploadD2File')) {
+            throw new CHttpException(403, Yii::t("D2filesModule.model","You are not authorized to perform this action."));
+        }
+        
         if (!$this->performReadValidation($model_name, $model_id)) {
             throw new CHttpException(403, Yii::t("D2filesModule.model","You are not authorized to perform this action."));
         }
@@ -138,7 +143,7 @@ class D2filesController extends Controller {
         }
         
         // validate delete action access
-        if (!Yii::app()->user->checkAccess($model->model . '.delete')) {
+        if (!Yii::app()->user->checkAccess($model->model . '.deleteD2File')) {
             throw new CHttpException(403, Yii::t("D2filesModule.model","You are not authorized to perform this action."));
         }
         
@@ -156,12 +161,17 @@ class D2filesController extends Controller {
         if ($model === null) {
             throw new CHttpException(404, Yii::t("D2filesModule.model","The requested record does not exist."));
         }
+
+        // validate download action access
+        if (!Yii::app()->user->checkAccess($model->model . '.downloadD2File')) {
+            throw new CHttpException(403, Yii::t("D2filesModule.model","You are not authorized to perform this action."));
+        }
         
         // validate read access
         if (!$this->performReadValidation($model->model, $model->model_id)) {
             throw new CHttpException(403, Yii::t("D2filesModule.model","You are not authorized to perform this action."));
         }
-        
+
         Yii::import( "vendor.dbrisinajumi.d2files.compnents.*");
         $oUploadHandler = new UploadHandlerD2files(
                         array(
