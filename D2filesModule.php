@@ -5,6 +5,8 @@ class D2filesModule extends CWebModule
     public $upload_dir;
     public $accept_file_types = '/\.(gif|pdf|dat|jpe?g|png)$/i';
     
+    public $registre_tasks_to_models = false;
+    
 	public function init()
 	{
 		// this method is called when the module is being created

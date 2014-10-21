@@ -44,6 +44,19 @@ class D2files extends BaseD2files {
 
     public function afterSave() {
         $this->addImages();
+
+        /**
+         * registre file in task
+         */
+        $registre_tasks_to_models = Yii::app()->getModule('d2files')->registre_tasks_to_models;
+        if($registre_tasks_to_models 
+                && isset($registre_tasks_to_models[$this->model])
+        ){
+            $this->createProject($registre_tasks_to_models[$this->model]);
+            
+        
+            
+        }
         parent::afterSave();
     }
 
@@ -109,5 +122,60 @@ class D2files extends BaseD2files {
         return $criteria;
 
     }
+    
+    /**
+     * create project 
+     * @param array $settings 
+     * @return boolean
+     */
+    public function createProject($settings){
+    
+        //currently only for persons create project
+        if($this->model != 'd2person.PprsPerson'){
+            return false;
+        }
 
+        //validate user roles with setting roles
+        if(isset($settings['user_roles'])){
+            $user_roles = Authassignment::model()->getUserRoles(Yii::app()->user->id);
+            $a = array_intersect($user_roles,$settings['user_roles']);
+            if(empty($a)){
+                return false;
+            }
+        }        
+        
+        $model = PprsPerson::model()->findByPk($this->model_id);
+        
+        //create project
+        $ttsk = new TtskTask;
+        $ttsk->ttsk_pprs_id = $this->model_id;
+        $ttsk->ttsk_name = 'New attachment to ' . $model->itemLabel;
+        $ttsk->ttsk_description = '';
+        $ttsk->ttsk_tstt_id = $settings['new_project_status']; //not started
+        try {
+            if (!$ttsk->save()) {
+                return false;
+            }
+        } catch (Exception $e) {
+            return false;            
+        }        
+        
+        //create task
+        $tcmn = new TcmnCommunication;
+        $tcmn->tcmn_ttsk_id = $ttsk->ttsk_id;
+        $tcmn->tcmn_task  = 'Validate attachment:' . PHP_EOL;
+        $tcmn->tcmn_task .= $this->file_name . ' ' . $this->add_datetime;
+        $tcmn->tcmn_tcst_id = $settings['task_init_status'];
+        $tcmn->tcmn_datetime = new CDbExpression('ADDDATE(NOW(),'.$settings['task_due_in_days'].' )');
+        try {
+            if (!$tcmn->save()) {
+                return false;
+            }
+        } catch (Exception $e) {
+            return false;            
+        }                    
+        
+        return true;
+    }    
+    
 }
