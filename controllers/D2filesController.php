@@ -109,9 +109,8 @@ class D2filesController extends Controller {
     public function actionUpload($model_name, $model_id) {
         
         // validate download action access
-        if (!Yii::app()->user->checkAccess($model_name . '.uploadD2File')) {
-            throw new CHttpException(403, Yii::t("D2filesModule.model","You are not authorized to perform this action."));
-        }
+        //if (!Yii::app()->user->checkAccess($model_name . '.uploadD2File')) {
+        D2files::extendedCheckAccess($model_name . '.uploadD2File');
         
         if (!$this->performReadValidation($model_name, $model_id)) {
             throw new CHttpException(403, Yii::t("D2filesModule.model","You are not authorized to perform this action."));
@@ -143,9 +142,8 @@ class D2filesController extends Controller {
         }
         
         // validate delete action access
-        if (!Yii::app()->user->checkAccess($model->model . '.deleteD2File')) {
-            throw new CHttpException(403, Yii::t("D2filesModule.model","You are not authorized to perform this action."));
-        }
+        //if (!Yii::app()->user->checkAccess($model->model . '.deleteD2File')) {
+        D2files::extendedCheckAccess($model->model . '.deleteD2File');
         
         $model->deleted = 1;
         $model->save();
@@ -163,9 +161,8 @@ class D2filesController extends Controller {
         }
 
         // validate download action access
-        if (!Yii::app()->user->checkAccess($model->model . '.downloadD2File')) {
-            throw new CHttpException(403, Yii::t("D2filesModule.model","You are not authorized to perform this action."));
-        }
+        //if (!Yii::app()->user->checkAccess($model->model . '.downloadD2File')) {
+        D2files::extendedCheckAccess($model->model . '.downloadD2File');
         
         // validate read access
         if (!$this->performReadValidation($model->model, $model->model_id)) {

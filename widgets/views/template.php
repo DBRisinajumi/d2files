@@ -1,11 +1,11 @@
 <?php
-    if (Yii::app()->user->checkAccess($model . '.downloadD2File')) {
+    if (D2files::extendedCheckAccess($model . '.downloadD2File',false)) {
         $sFileListHtml = '<table id="attachment_list" class="items table table-condensed table-bordered">';
         
         foreach ($files as $mfile) {
             
             $file_delete_ajax_url = '';
-            if (Yii::app()->user->checkAccess($model . '.deleteD2File')) {
+            if (D2files::extendedCheckAccess($model . '.deleteD2File',false)) {
                 $delete_url = $this->controler->createUrl('deleteFile',array(
                     'id' => $mfile->id,
                 ));
@@ -31,7 +31,7 @@
                                 '.$sFileListHtml.'
                                 </form>';
         
-        if (Yii::app()->user->checkAccess($model . '.uploadD2File')) {
+        if (D2files::extendedCheckAccess($model . '.uploadD2File',false)) {
             echo "<tr class=\"dropZone\" style=\"border: 3px dashed #ccc;\"><th style=\"vertical-align: middle; width: 220px; padding-left:10px;\"><span class=\"bigger-110 bolder\"><i class=\"icon-cloud-upload grey\"></i> {label}</span></th><td>{value}</td></tr>\n";
         }
         echo "<tr><td colspan=\"2\">".$file_form."</td></tr>\n";

@@ -46,9 +46,10 @@ class UploadHandlerD2files extends UploadHandler {
         //}
         
         // validate create action access
-        if (!Yii::app()->user->checkAccess($this->options['model_name'] . '.create')) {
-            throw new CHttpException(403, Yii::t("D2filesModule.model","You are not authorized to perform this action."));
-        }
+//        if (!Yii::app()->user->checkAccess($this->options['model_name'] . '.create')) {
+//            throw new CHttpException(403, Yii::t("D2filesModule.model","You are not authorized to perform this action."));
+//        }
+        D2files::extendedCheckAccess($this->options['model_name'] . '.uploadD2File');        
         
         $upload = isset($_FILES[$this->options['param_name']]) ?
                 $_FILES[$this->options['param_name']] : null;

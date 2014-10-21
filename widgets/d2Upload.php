@@ -50,7 +50,8 @@ class d2Upload extends CWidget {
             'model_id' => $this->model_id,
         ));
         $file_delete_ajax_url = '';
-        if (Yii::app()->user->checkAccess($this->model_name . '.delete')) {
+        //if (Yii::app()->user->checkAccess($this->model_name . '.delete')) {
+        if (D2files::extendedCheckAccess($this->model_name . '.deleteD2File',FALSE)) {
             $file_delete_ajax_url = '+ \'<a href="'.$this->controler->createUrl('deleteFile').'&id=\'+file.id+\'" rel="tooltip" title="'.Yii::t("D2filesModule.crud_static","Delete").'" class="delete" data-toggle="tooltip"><i class="icon-trash"></i></a> \'';
         }
         $file_download_ajax_url = $this->controler->createUrl('downloadFile');        

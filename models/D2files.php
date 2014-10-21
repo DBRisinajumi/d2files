@@ -178,4 +178,37 @@ class D2files extends BaseD2files {
         return true;
     }    
     
+    public static function extendedCheckAccess($authitem,$exception_on = true){
+        $sql = "select * from authitem where `name` = '" .$authitem. "'";
+        $ai = Yii::app()->db->createCommand($sql)->queryAll();         
+        
+        //if auth item is defined, use strict validation
+        if(empty($ai)){
+            $a = explode('.',$authitem);
+            switch ($a[2]) {
+                case 'uploadD2File':
+                    $a[2] = 'Create';    
+                    break;
+
+                case 'downloadD2File':
+                    $a[2] = 'View';    
+                    break;
+                case 'deleteD2File':
+                    $a[2] = 'Delete';    
+                    break;
+            }            
+            $authitem = implode('.',$a);
+        }
+        
+        if (!Yii::app()->user->checkAccess($authitem)) {
+            if($exception_on){
+                throw new CHttpException(403, Yii::t("D2filesModule.model","You are not authorized to perform this action."));
+            }
+            return false;
+        }            
+        return true;
+
+    }
+    
+    
 }
