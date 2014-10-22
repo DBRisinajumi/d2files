@@ -1,7 +1,7 @@
 <?php
-    if (D2files::extendedCheckAccess($model . '.downloadD2File',false)) {
+
         $sFileListHtml = '<table id="attachment_list" class="items table table-condensed table-bordered">';
-        
+    if (D2files::extendedCheckAccess($model . '.downloadD2File',false)) {        
         foreach ($files as $mfile) {
             
             $file_delete_ajax_url = '';
@@ -24,8 +24,9 @@
                     . '</td>'
                     . '</tr>';
         }
+    }            
         $sFileListHtml .= '</table>';
-    }    
+    
         $file_form = '<form method="post" id="d2FileUploadForm" name="DataForm" action="" enctype="multipart/form-data">'.
                                 '<input id="fileupload" type="file" name="files[]"  multiple />
                                 '.$sFileListHtml.'
