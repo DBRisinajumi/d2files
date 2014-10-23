@@ -9,25 +9,53 @@
 $this->breadcrumbs[Yii::t('D2filesModule.model','D2files')] = array('admin');
 $this->breadcrumbs[$model->{$model->tableSchema->primaryKey}] = array('view','id' => $model->{$model->tableSchema->primaryKey});
 $this->breadcrumbs[] = Yii::t('D2filesModule.crud_static', 'View');
+$cancel_buton = $this->widget("bootstrap.widgets.TbButton", array(
+    #"label"=>Yii::t("D2filesModule.crud_static","Cancel"),
+    "icon"=>"chevron-left",
+    "size"=>"large",
+    "url"=>(isset($_GET["returnUrl"]))?$_GET["returnUrl"]:array("{$this->id}/admin"),
+    "visible"=>(Yii::app()->user->checkAccess("D2files.D2files.*") || Yii::app()->user->checkAccess("D2files.D2files.View")),
+    "htmlOptions"=>array(
+                    "class"=>"search-button",
+                    "data-toggle"=>"tooltip",
+                    "title"=>Yii::t("D2filesModule.crud_static","Back"),
+                )
+ ),true);
+    
 ?>
-
 <?php $this->widget("TbBreadcrumbs", array("links"=>$this->breadcrumbs)) ?>
-    <h1>
-        <?php echo Yii::t('D2filesModule.model','D2files')?>
-        <small>
-            <?php echo $model->itemLabel ?>
+<div class="clearfix">
+    <div class="btn-toolbar pull-left">
+        <div class="btn-group"><?php echo $cancel_buton;?></div>
+        <div class="btn-group">
+            <h1>
+                <i class=""></i>
+                <?php echo Yii::t('D2filesModule.model','D2files');?>                <small><?php echo$model->itemLabel?></small>
+            </h1>
+        </div>
+        <div class="btn-group">
+            <?php
+            
+            $this->widget("bootstrap.widgets.TbButton", array(
+                "label"=>Yii::t("D2filesModule.crud_static","Delete"),
+                "type"=>"danger",
+                "icon"=>"icon-trash icon-white",
+                "size"=>"large",
+                "htmlOptions"=> array(
+                    "submit"=>array("delete","id"=>$model->{$model->tableSchema->primaryKey}, "returnUrl"=>(Yii::app()->request->getParam("returnUrl"))?Yii::app()->request->getParam("returnUrl"):$this->createUrl("admin")),
+                    "confirm"=>Yii::t("D2filesModule.crud_static","Do you want to delete this item?")
+                ),
+                "visible"=> (Yii::app()->request->getParam("id")) && (Yii::app()->user->checkAccess("D2files.D2files.*") || Yii::app()->user->checkAccess("D2files.D2files.Delete"))
+            ));
+            ?>
+        </div>
+    </div>
+</div>
 
-        </small>
-
-        </h1>
-
-
-
-<?php $this->renderPartial("_toolbar", array("model"=>$model)); ?>
 
 
 <div class="row">
-    <div class="span7">
+    <div class="span12">
         <h2>
             <?php echo Yii::t('D2filesModule.crud_static','Data')?>            <small>
                 #<?php echo $model->id ?>            </small>
@@ -39,172 +67,158 @@ $this->breadcrumbs[] = Yii::t('D2filesModule.crud_static', 'View');
             array(
                 'data' => $model,
                 'attributes' => array(
+                
                 array(
-                        'name' => 'id',
-                        'type' => 'raw',
-                        'value' => $this->widget(
-                            'TbEditableField',
-                            array(
-                                'model' => $model,
-                                'attribute' => 'id',
-                                'url' => $this->createUrl('/d2files/d2files/editableSaver'),
-                            ),
-                            true
-                        )
-                    ),
-        array(
-                    'name' => 'type',
-                    'value' => $model->getEnumLabel('type',$model->type),
-        ),
-array(
-                        'name' => 'file_name',
-                        'type' => 'raw',
-                        'value' => $this->widget(
-                            'TbEditableField',
-                            array(
-                                'model' => $model,
-                                'attribute' => 'file_name',
-                                'url' => $this->createUrl('/d2files/d2files/editableSaver'),
-                            ),
-                            true
-                        )
-                    ),
-array(
-                        'name' => 'upload_path',
-                        'type' => 'raw',
-                        'value' => $this->widget(
-                            'TbEditableField',
-                            array(
-                                'model' => $model,
-                                'attribute' => 'upload_path',
-                                'url' => $this->createUrl('/d2files/d2files/editableSaver'),
-                            ),
-                            true
-                        )
-                    ),
-array(
-                        'name' => 'add_datetime',
-                        'type' => 'raw',
-                        'value' => $this->widget(
-                            'TbEditableField',
-                            array(
-                                'model' => $model,
-                                'attribute' => 'add_datetime',
-                                'url' => $this->createUrl('/d2files/d2files/editableSaver'),
-                            ),
-                            true
-                        )
-                    ),
-array(
-                        'name' => 'user_id',
-                        'type' => 'raw',
-                        'value' => $this->widget(
-                            'TbEditableField',
-                            array(
-                                'model' => $model,
-                                'attribute' => 'user_id',
-                                'url' => $this->createUrl('/d2files/d2files/editableSaver'),
-                            ),
-                            true
-                        )
-                    ),
-array(
-                        'name' => 'deleted',
-                        'type' => 'raw',
-                        'value' => $this->widget(
-                            'TbEditableField',
-                            array(
-                                'model' => $model,
-                                'attribute' => 'deleted',
-                                'url' => $this->createUrl('/d2files/d2files/editableSaver'),
-                            ),
-                            true
-                        )
-                    ),
-array(
-                        'name' => 'notes',
-                        'type' => 'raw',
-                        'value' => $this->widget(
-                            'TbEditableField',
-                            array(
-                                'model' => $model,
-                                'attribute' => 'notes',
-                                'url' => $this->createUrl('/d2files/d2files/editableSaver'),
-                            ),
-                            true
-                        )
-                    ),
-array(
-                        'name' => 'model',
-                        'type' => 'raw',
-                        'value' => $this->widget(
-                            'TbEditableField',
-                            array(
-                                'model' => $model,
-                                'attribute' => 'model',
-                                'url' => $this->createUrl('/d2files/d2files/editableSaver'),
-                            ),
-                            true
-                        )
-                    ),
-array(
-                        'name' => 'model_id',
-                        'type' => 'raw',
-                        'value' => $this->widget(
-                            'TbEditableField',
-                            array(
-                                'model' => $model,
-                                'attribute' => 'model_id',
-                                'url' => $this->createUrl('/d2files/d2files/editableSaver'),
-                            ),
-                            true
-                        )
-                    ),
+                    'name' => 'id',
+                    'type' => 'raw',
+                    'value' => $this->widget(
+                        'EditableField',
+                        array(
+                            'model' => $model,
+                            'attribute' => 'id',
+                            'url' => $this->createUrl('/d2files/d2files/editableSaver'),
+                        ),
+                        true
+                    )
+                ),
+
+                array(
+                    'name' => 'type_id',
+                    'type' => 'raw',
+                    'value' => $this->widget(
+                        'EditableField',
+                        array(
+                            'model' => $model,
+                            'type' => 'select',
+                            'url' => $this->createUrl('/d2files/d2files/editableSaver'),
+                            'source' => CHtml::listData(D2filesType::model()->findAll(array('limit' => 1000)), 'id', 'itemLabel'),
+                            'attribute' => 'type_id',
+                            //'placement' => 'right',
+                        ),
+                        true
+                    )
+                ),
+
+                array(
+                    'name' => 'file_name',
+                    'type' => 'raw',
+                    'value' => $this->widget(
+                        'EditableField',
+                        array(
+                            'model' => $model,
+                            'attribute' => 'file_name',
+                            'url' => $this->createUrl('/d2files/d2files/editableSaver'),
+                        ),
+                        true
+                    )
+                ),
+
+                array(
+                    'name' => 'upload_path',
+                    'type' => 'raw',
+                    'value' => $this->widget(
+                        'EditableField',
+                        array(
+                            'model' => $model,
+                            'attribute' => 'upload_path',
+                            'url' => $this->createUrl('/d2files/d2files/editableSaver'),
+                        ),
+                        true
+                    )
+                ),
+
+                array(
+                    'name' => 'add_datetime',
+                    'type' => 'raw',
+                    'value' => $this->widget(
+                        'EditableField',
+                        array(
+                            'model' => $model,
+                            'type' => 'datetime',
+                            'url' => $this->createUrl('/d2files/d2files/editableSaver'),
+                            'attribute' => 'add_datetime',
+                            //'placement' => 'right',
+                        ),
+                        true
+                    )
+                ),
+
+                array(
+                    'name' => 'user_id',
+                    'type' => 'raw',
+                    'value' => $this->widget(
+                        'EditableField',
+                        array(
+                            'model' => $model,
+                            'attribute' => 'user_id',
+                            'url' => $this->createUrl('/d2files/d2files/editableSaver'),
+                        ),
+                        true
+                    )
+                ),
+
+                array(
+                    'name' => 'deleted',
+                    'type' => 'raw',
+                    'value' => $this->widget(
+                        'EditableField',
+                        array(
+                            'model' => $model,
+                            'attribute' => 'deleted',
+                            'url' => $this->createUrl('/d2files/d2files/editableSaver'),
+                        ),
+                        true
+                    )
+                ),
+
+                array(
+                    'name' => 'notes',
+                    'type' => 'raw',
+                    'value' => $this->widget(
+                        'EditableField',
+                        array(
+                            'model' => $model,
+                            'attribute' => 'notes',
+                            'url' => $this->createUrl('/d2files/d2files/editableSaver'),
+                        ),
+                        true
+                    )
+                ),
+
+                array(
+                    'name' => 'model',
+                    'type' => 'raw',
+                    'value' => $this->widget(
+                        'EditableField',
+                        array(
+                            'model' => $model,
+                            'attribute' => 'model',
+                            'url' => $this->createUrl('/d2files/d2files/editableSaver'),
+                        ),
+                        true
+                    )
+                ),
+
+                array(
+                    'name' => 'model_id',
+                    'type' => 'raw',
+                    'value' => $this->widget(
+                        'EditableField',
+                        array(
+                            'model' => $model,
+                            'attribute' => 'model_id',
+                            'url' => $this->createUrl('/d2files/d2files/editableSaver'),
+                        ),
+                        true
+                    )
+                ),
            ),
         )); ?>
-        
-<fieldset>
-    <?php
-    $form = $this->beginWidget('CActiveForm', array(
-          'id' => 'somemodel-form',
-          'enableAjaxValidation' => false,
-            //This is very important when uploading files
-          'htmlOptions' => array('enctype' => 'multipart/form-data'),
-        ));
-      ?>    
-        <div class="row">
-
-        </div>
-        <!-- Other Fields... -->
-        <div class="row">
-            <?php //echo $form->labelEx($model,'photos'); ?>
-            <?php
-            $this->widget( 'vendor.dbrisinajumi.xupload.XUpload', array(
-                'url' => Yii::app( )->createUrl( "/controller/upload"),
-                //our XUploadForm
-                'model' => $photos,
-                //We set this for the widget to be able to target our own form
-                'htmlOptions' => array('id'=>'somemodel-form'),
-                'attribute' => 'file',
-                'multiple' => true,
-                //Note that we are using a custom view for our widget
-                //Thats becase the default widget includes the 'form' 
-                //which we don't want here
-                'formView' => 'vendor.dbrisinajumi.d2files.views.d2files.view',
-                )    
-            );
-            ?>
-        </div>
-        <button type="submit">Submit</button>
-    <?php $this->endWidget(); ?>
-</fieldset>        
     </div>
 
-
-    <div class="span5">
-        <div class="well">
-            <?php $this->renderPartial('_view-relations',array('model' => $model)); ?>        </div>
     </div>
+    <div class="row">
+    
 </div>
 
-<?php $this->renderPartial("_toolbar", array("model"=>$model)); ?>
+<?php echo $cancel_buton; ?>

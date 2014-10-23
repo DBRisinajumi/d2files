@@ -34,4 +34,5 @@ return array (
   'The requested page does not exist.' => '',
   'Update' => '',
   'View' => '',
+  'Add comment' => '',
 );

@@ -1,18 +1,16 @@
 <?php
 $this->setPageTitle(
-    Yii::t('D2filesModule.model', 'D2files')
+    Yii::t('D2filesModule.model', 'D2files Type')
     . ' - '
     . Yii::t('D2filesModule.crud_static', 'Create')
 );
 
-$this->breadcrumbs[Yii::t('D2filesModule.model', 'D2files')] = array('admin');
-$this->breadcrumbs[] = Yii::t('D2filesModule.crud_static', 'Create');
 $cancel_buton = $this->widget("bootstrap.widgets.TbButton", array(
     #"label"=>Yii::t("D2filesModule.crud_static","Cancel"),
     "icon"=>"chevron-left",
     "size"=>"large",
     "url"=>(isset($_GET["returnUrl"]))?$_GET["returnUrl"]:array("{$this->id}/admin"),
-    "visible"=>(Yii::app()->user->checkAccess("D2files.D2files.*") || Yii::app()->user->checkAccess("D2files.D2files.View")),
+    "visible"=>(Yii::app()->user->checkAccess("D2files.D2filesType.*") || Yii::app()->user->checkAccess("D2files.D2filesType.View")),
     "htmlOptions"=>array(
                     "class"=>"search-button",
                     "data-toggle"=>"tooltip",
@@ -21,14 +19,14 @@ $cancel_buton = $this->widget("bootstrap.widgets.TbButton", array(
  ),true);
     
 ?>
-<?php $this->widget("TbBreadcrumbs", array("links" => $this->breadcrumbs)) ?>
+
 <div class="clearfix">
     <div class="btn-toolbar pull-left">
         <div class="btn-group"><?php echo $cancel_buton;?></div>
         <div class="btn-group">
             <h1>
                 <i class=""></i>
-                <?php echo Yii::t('D2filesModule.model','Create D2files');?>            </h1>
+                <?php echo Yii::t('D2filesModule.model','Create D2files Type');?>            </h1>
         </div>
     </div>
 </div>
@@ -48,7 +46,7 @@ $cancel_buton = $this->widget("bootstrap.widgets.TbButton", array(
                        "htmlOptions"=> array(
                             "onclick"=>"$('.crud-form form').submit();",
                        ),
-                       "visible"=> (Yii::app()->user->checkAccess("D2files.D2files.*") || Yii::app()->user->checkAccess("D2files.D2files.View"))
+                       "visible"=> (Yii::app()->user->checkAccess("D2files.D2filesType.*") || Yii::app()->user->checkAccess("D2files.D2filesType.View"))
                     )); 
                     ?>
                   

@@ -6,31 +6,32 @@ $this->setPageTitle(
 );
 
 $this->breadcrumbs[] = Yii::t('D2filesModule.model', 'D2files');
-Yii::app()->clientScript->registerScript('search', "
-    $('.search-button').click(function(){
-        $('.search-form').toggle();
-        return false;
-    });
-    $('.search-form form').submit(function(){
-        $.fn.yiiGridView.update(
-            'd2files-grid',
-            {data: $(this).serialize()}
-        );
-        return false;
-    });
-    ");
+
 ?>
 
 <?php $this->widget("TbBreadcrumbs", array("links" => $this->breadcrumbs)) ?>
-    <h1>
+<div class="clearfix">
+    <div class="btn-toolbar pull-left">
+        <div class="btn-group">
+        <?php 
+        $this->widget('bootstrap.widgets.TbButton', array(
+             'label'=>Yii::t('D2filesModule.crud_static','Create'),
+             'icon'=>'icon-plus',
+             'size'=>'large',
+             'type'=>'success',
+             'url'=>array('create'),
+             'visible'=>(Yii::app()->user->checkAccess('D2files.D2files.*') || Yii::app()->user->checkAccess('D2files.D2files.Create'))
+        ));  
+        ?>
+</div>
+        <div class="btn-group">
+            <h1>
+                <i class=""></i>
+                <?php echo Yii::t('D2filesModule.model', 'D2files');?>            </h1>
+        </div>
+    </div>
+</div>
 
-        <?php echo Yii::t('D2filesModule.model', 'D2files'); ?>
-        <small><?php echo Yii::t('D2filesModule.crud_static', 'Manage'); ?></small>
-
-    </h1>
-
-
-<?php $this->renderPartial("_toolbar", array("model" => $model)); ?>
 <?php Yii::beginProfile('D2files.view.grid'); ?>
 
 
@@ -54,8 +55,30 @@ $this->widget('TbGridView',
                 'urlExpression' => 'Yii::app()->controller->createUrl("view", array("id" => $data["id"]))'
             ),
             array(
-                'class' => 'TbEditableColumn',
+                'class' => 'editable.EditableColumn',
                 'name' => 'id',
+                'editable' => array(
+                    'url' => $this->createUrl('/d2files/d2files/editableSaver'),
+                    //'placement' => 'right',
+                ),
+                'htmlOptions' => array(
+                    'class' => 'numeric-column',
+                ),
+            ),
+            array(
+                'class' => 'editable.EditableColumn',
+                'name' => 'type_id',
+                'editable' => array(
+                    'type' => 'select',
+                    'url' => $this->createUrl('/d2files/d2files/editableSaver'),
+                    'source' => CHtml::listData(D2filesType::model()->findAll(array('limit' => 1000)), 'id', 'itemLabel'),
+                    //'placement' => 'right',
+                )
+            ),
+            array(
+                //varchar(255)
+                'class' => 'editable.EditableColumn',
+                'name' => 'file_name',
                 'editable' => array(
                     'url' => $this->createUrl('/d2files/d2files/editableSaver'),
                     //'placement' => 'right',
@@ -63,52 +86,57 @@ $this->widget('TbGridView',
             ),
             array(
                 'class' => 'editable.EditableColumn',
-                'name' => 'type',
-                'value' => '$data->getEnumLabel(\'type\',$data->type)',
+                'name' => 'upload_path',
                 'editable' => array(
-                    'type' => 'select',
-                    'url' => $this->createUrl('/d2files/d2files/editableSaver'),
-                    'source' => $model->getEnumFieldLabels('type'),
-                    //'placement' => 'right',
-                ),
-               'filter' => $model->getEnumFieldLabels('type'),
-            ),
-            array(
-                'class' => 'TbEditableColumn',
-                'name' => 'file_name',
-                'editable' => array(
+                    'type' => 'textarea',
                     'url' => $this->createUrl('/d2files/d2files/editableSaver'),
                     //'placement' => 'right',
                 )
             ),
-            #'upload_path',
             array(
-                'class' => 'TbEditableColumn',
+                'class' => 'editable.EditableColumn',
                 'name' => 'add_datetime',
                 'editable' => array(
+                    'type' => 'datetime',
                     'url' => $this->createUrl('/d2files/d2files/editableSaver'),
                     //'placement' => 'right',
                 )
             ),
             array(
-                'class' => 'TbEditableColumn',
+                'class' => 'editable.EditableColumn',
                 'name' => 'user_id',
                 'editable' => array(
                     'url' => $this->createUrl('/d2files/d2files/editableSaver'),
                     //'placement' => 'right',
-                )
+                ),
+                'htmlOptions' => array(
+                    'class' => 'numeric-column',
+                ),
             ),
             array(
-                'class' => 'TbEditableColumn',
+                'class' => 'editable.EditableColumn',
                 'name' => 'deleted',
                 'editable' => array(
                     'url' => $this->createUrl('/d2files/d2files/editableSaver'),
                     //'placement' => 'right',
+                ),
+                'htmlOptions' => array(
+                    'class' => 'numeric-column',
+                ),
+            ),
+            array(
+                'class' => 'editable.EditableColumn',
+                'name' => 'notes',
+                'editable' => array(
+                    'type' => 'textarea',
+                    'url' => $this->createUrl('/d2files/d2files/editableSaver'),
+                    //'placement' => 'right',
                 )
             ),
-            #'notes',
+            /*
             array(
-                'class' => 'TbEditableColumn',
+                //varchar(50)
+                'class' => 'editable.EditableColumn',
                 'name' => 'model',
                 'editable' => array(
                     'url' => $this->createUrl('/d2files/d2files/editableSaver'),
@@ -116,24 +144,30 @@ $this->widget('TbGridView',
                 )
             ),
             array(
-                'class' => 'TbEditableColumn',
+                'class' => 'editable.EditableColumn',
                 'name' => 'model_id',
                 'editable' => array(
                     'url' => $this->createUrl('/d2files/d2files/editableSaver'),
                     //'placement' => 'right',
-                )
+                ),
+                'htmlOptions' => array(
+                    'class' => 'numeric-column',
+                ),
             ),
+            */
 
             array(
                 'class' => 'TbButtonColumn',
                 'buttons' => array(
                     'view' => array('visible' => 'Yii::app()->user->checkAccess("D2files.D2files.View")'),
-                    'update' => array('visible' => 'Yii::app()->user->checkAccess("D2files.D2files.Update")'),
+                    'update' => array('visible' => 'FALSE'),
                     'delete' => array('visible' => 'Yii::app()->user->checkAccess("D2files.D2files.Delete")'),
                 ),
                 'viewButtonUrl' => 'Yii::app()->controller->createUrl("view", array("id" => $data->id))',
-                'updateButtonUrl' => 'Yii::app()->controller->createUrl("update", array("id" => $data->id))',
                 'deleteButtonUrl' => 'Yii::app()->controller->createUrl("delete", array("id" => $data->id))',
+                'deleteConfirmation'=>Yii::t('D2filesModule.crud_static','Do you want to delete this item?'),                    
+                'viewButtonOptions'=>array('data-toggle'=>'tooltip'),   
+                'deleteButtonOptions'=>array('data-toggle'=>'tooltip'),   
             ),
         )
     )

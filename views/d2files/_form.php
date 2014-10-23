@@ -1,10 +1,9 @@
 <div class="crud-form">
-
-    
+    <?php  ?>    
     <?php
-        Yii::app()->bootstrap->registerAssetCss('../select2/select2.css');
-        Yii::app()->bootstrap->registerAssetJs('../select2/select2.js');
-        Yii::app()->clientScript->registerScript('crud/variant/update','$(".crud-form select").select2();');
+        Yii::app()->bootstrap->registerPackage('select2');
+        Yii::app()->clientScript->registerScript('crud/variant/update','$("#d2files-form select").select2();');
+
 
         $form=$this->beginWidget('TbActiveForm', array(
             'id' => 'd2files-form',
@@ -19,17 +18,11 @@
     ?>
     
     <div class="row">
-        <div class="span7">
-            <h2>
-                <?php echo Yii::t('D2filesModule.crud_static','Data')?>                <small>
-                    #<?php echo $model->id ?>                </small>
-
-            </h2>
-
-
+        <div class="span12">
             <div class="form-horizontal">
 
-                                    <?php  ?>
+                                    
+                    <?php  ?>
                     <div class="control-group">
                         <div class='control-label'>
                             <?php  ?>
@@ -44,22 +37,36 @@
                         </div>
                     </div>
                     <?php  ?>
-                                    <?php  ?>
+                                    
+                    <?php  ?>
                     <div class="control-group">
                         <div class='control-label'>
-                            <?php echo $form->labelEx($model, 'type') ?>
+                            <?php echo $form->labelEx($model, 'type_id') ?>
                         </div>
                         <div class='controls'>
                             <span class="tooltip-wrapper" data-toggle='tooltip' data-placement="right"
-                                 title='<?php echo (($t = Yii::t('D2filesModule.model', 'tooltip.type')) != 'tooltip.type')?$t:'' ?>'>
+                                 title='<?php echo (($t = Yii::t('D2filesModule.model', 'tooltip.type_id')) != 'tooltip.type_id')?$t:'' ?>'>
                                 <?php
-                            echo CHtml::activeDropDownList($model, 'type', $model->getEnumFieldLabels('type'));
-                            echo $form->error($model,'type')
+                            $this->widget(
+                '\GtcRelation',
+                array(
+                    'model' => $model,
+                    'relation' => 'type',
+                    'fields' => 'itemLabel',
+                    'allowEmpty' => true,
+                    'style' => 'dropdownlist',
+                    'htmlOptions' => array(
+                        'checkAll' => 'all'
+                    ),
+                )
+                );
+                            echo $form->error($model,'type_id')
                             ?>                            </span>
                         </div>
                     </div>
                     <?php  ?>
-                                    <?php  ?>
+                                    
+                    <?php  ?>
                     <div class="control-group">
                         <div class='control-label'>
                             <?php echo $form->labelEx($model, 'file_name') ?>
@@ -74,7 +81,8 @@
                         </div>
                     </div>
                     <?php  ?>
-                                    <?php  ?>
+                                    
+                    <?php  ?>
                     <div class="control-group">
                         <div class='control-label'>
                             <?php echo $form->labelEx($model, 'upload_path') ?>
@@ -89,7 +97,8 @@
                         </div>
                     </div>
                     <?php  ?>
-                                    <?php  ?>
+                                    
+                    <?php  ?>
                     <div class="control-group">
                         <div class='control-label'>
                             <?php echo $form->labelEx($model, 'add_datetime') ?>
@@ -104,7 +113,8 @@
                         </div>
                     </div>
                     <?php  ?>
-                                    <?php  ?>
+                                    
+                    <?php  ?>
                     <div class="control-group">
                         <div class='control-label'>
                             <?php echo $form->labelEx($model, 'user_id') ?>
@@ -119,7 +129,8 @@
                         </div>
                     </div>
                     <?php  ?>
-                                    <?php  ?>
+                                    
+                    <?php  ?>
                     <div class="control-group">
                         <div class='control-label'>
                             <?php echo $form->labelEx($model, 'deleted') ?>
@@ -134,7 +145,8 @@
                         </div>
                     </div>
                     <?php  ?>
-                                    <?php  ?>
+                                    
+                    <?php  ?>
                     <div class="control-group">
                         <div class='control-label'>
                             <?php echo $form->labelEx($model, 'notes') ?>
@@ -149,7 +161,8 @@
                         </div>
                     </div>
                     <?php  ?>
-                                    <?php  ?>
+                                    
+                    <?php  ?>
                     <div class="control-group">
                         <div class='control-label'>
                             <?php echo $form->labelEx($model, 'model') ?>
@@ -158,13 +171,14 @@
                             <span class="tooltip-wrapper" data-toggle='tooltip' data-placement="right"
                                  title='<?php echo (($t = Yii::t('D2filesModule.model', 'tooltip.model')) != 'tooltip.model')?$t:'' ?>'>
                                 <?php
-                            echo $form->textField($model, 'model', array('size' => 20, 'maxlength' => 20));
+                            echo $form->textField($model, 'model', array('size' => 50, 'maxlength' => 50));
                             echo $form->error($model,'model')
                             ?>                            </span>
                         </div>
                     </div>
                     <?php  ?>
-                                    <?php  ?>
+                                    
+                    <?php  ?>
                     <div class="control-group">
                         <div class='control-label'>
                             <?php echo $form->labelEx($model, 'model_id') ?>
@@ -184,34 +198,26 @@
         </div>
         <!-- main inputs -->
 
+            </div>
+    <div class="row">
         
-        <div class="span5"><!-- sub inputs -->
-            <div class="well">
-            <!--<h2>
-                <?php echo Yii::t('D2filesModule.crud_static','Relations')?>            </h2>-->
-                        </div>
-        </div>
-        <!-- sub inputs -->
     </div>
 
     <p class="alert">
-        <?php echo Yii::t('D2filesModule.crud_static','Fields with <span class="required">*</span> are required.');?>
+        
+        <?php 
+            echo Yii::t('D2filesModule.crud_static','Fields with <span class="required">*</span> are required.');
+                
+            /**
+             * @todo: We need the buttons inside the form, when a user hits <enter>
+             */                
+            echo ' '.CHtml::submitButton(Yii::t('D2filesModule.crud_static', 'Save'), array(
+                'class' => 'btn btn-primary',
+                'style'=>'visibility: hidden;'                
+            ));
+                
+        ?>
     </p>
 
-    <!-- TODO: We need the buttons inside the form, when a user hits <enter> -->
-    <div class="form-actions" style="visibility: hidden; height: 1px">
-        
-        <?php
-            echo CHtml::Button(
-            Yii::t('D2filesModule.crud_static', 'Cancel'), array(
-                'submit' => (isset($_GET['returnUrl']))?$_GET['returnUrl']:array('d2files/admin'),
-                'class' => 'btn'
-            ));
-            echo ' '.CHtml::submitButton(Yii::t('D2filesModule.crud_static', 'Save'), array(
-                'class' => 'btn btn-primary'
-            ));
-        ?>
-    </div>
 
-    <?php $this->endWidget() ?>
-</div> <!-- form -->
+    <?php $this->endWidget() ?>    <?php  ?></div> <!-- form -->

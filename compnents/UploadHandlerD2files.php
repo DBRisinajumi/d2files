@@ -133,7 +133,6 @@ class UploadHandlerD2files extends UploadHandler {
      */
     public function saveToDb($file_name,$model_name,$model_id) {
         $model = new D2files;
-        $model->type = D2files::TYPE_DOCUMENT;
         $model->file_name = $file_name;
         $model->upload_path = 'tttt';
         $model->add_datetime = date('Y.m.d H:i:s');

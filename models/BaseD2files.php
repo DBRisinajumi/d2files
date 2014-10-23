@@ -5,7 +5,7 @@
  *
  * Columns in table "d2files" available as properties of the model:
  * @property string $id
- * @property string $type
+ * @property integer $type_id
  * @property string $file_name
  * @property string $upload_path
  * @property string $add_datetime
@@ -15,16 +15,11 @@
  * @property string $model
  * @property string $model_id
  *
- * There are no model relations.
+ * Relations of table "d2files" available as properties of the model:
+ * @property D2filesType $type
  */
 abstract class BaseD2files extends CActiveRecord
 {
-    /**
-    * ENUM field values
-    */
-    const TYPE_DOCUMENT = 'Document';
-    const TYPE_IMAGE = 'Image';
-    const TYPE_OTHER = 'Other';
 
     public static function model($className = __CLASS__)
     {
@@ -40,21 +35,21 @@ abstract class BaseD2files extends CActiveRecord
     {
         return array_merge(
             parent::rules(), array(
-                array('type, file_name, upload_path, add_datetime, user_id, model, model_id', 'required'),
-                array('deleted, notes', 'default', 'setOnEmpty' => true, 'value' => null),
-                array('user_id, deleted', 'numerical', 'integerOnly' => true),
-                array('type', 'length', 'max' => 8),
-                array('file_name, model', 'length', 'max'=>255),
-                array('model_id', 'length', 'max'=>20),
+                array('file_name, upload_path, add_datetime, user_id, model, model_id', 'required'),
+                array('type_id, deleted, notes', 'default', 'setOnEmpty' => true, 'value' => null),
+                array('type_id, user_id, deleted', 'numerical', 'integerOnly' => true),
+                array('file_name', 'length', 'max' => 255),
+                array('model', 'length', 'max' => 50),
+                array('model_id', 'length', 'max' => 20),
                 array('notes', 'safe'),
-                array('id, type, file_name, upload_path, add_datetime, user_id, deleted, notes, model, model_id', 'safe', 'on' => 'search'),
+                array('id, type_id, file_name, upload_path, add_datetime, user_id, deleted, notes, model, model_id', 'safe', 'on' => 'search'),
             )
         );
     }
 
     public function getItemLabel()
     {
-        return (string) $this->type;
+        return (string) $this->file_name;
     }
 
     public function behaviors()
@@ -72,6 +67,7 @@ abstract class BaseD2files extends CActiveRecord
     {
         return array_merge(
             parent::relations(), array(
+                'type' => array(self::BELONGS_TO, 'D2filesType', 'type_id'),
             )
         );
     }
@@ -79,51 +75,18 @@ abstract class BaseD2files extends CActiveRecord
     public function attributeLabels()
     {
         return array(
-            'id' => Yii::t('model', 'ID'),
-            'type' => Yii::t('model', 'Type'),
-            'file_name' => Yii::t('model', 'File Name'),
-            'upload_path' => Yii::t('model', 'Upload Path'),
-            'add_datetime' => Yii::t('model', 'Add Datetime'),
-            'user_id' => Yii::t('model', 'User'),
-            'deleted' => Yii::t('model', 'Deleted'),
-            'notes' => Yii::t('model', 'Notes'),
-            'model' => Yii::t('model', 'Model'),
-            'model_id' => Yii::t('model', 'Model'),
+            'id' => Yii::t('D2filesModule.model', 'ID'),
+            'type_id' => Yii::t('D2filesModule.model', 'Type'),
+            'file_name' => Yii::t('D2filesModule.model', 'File Name'),
+            'upload_path' => Yii::t('D2filesModule.model', 'Upload Path'),
+            'add_datetime' => Yii::t('D2filesModule.model', 'Add Datetime'),
+            'user_id' => Yii::t('D2filesModule.model', 'User'),
+            'deleted' => Yii::t('D2filesModule.model', 'Deleted'),
+            'notes' => Yii::t('D2filesModule.model', 'Notes'),
+            'model' => Yii::t('D2filesModule.model', 'Model'),
+            'model_id' => Yii::t('D2filesModule.model', 'Model'),
         );
     }
-
-    public function enumLabels()
-    {
-        return array(
-           'type' => array(
-               self::TYPE_DOCUMENT => Yii::t('model', 'TYPE_DOCUMENT'),
-               self::TYPE_IMAGE => Yii::t('model', 'TYPE_IMAGE'),
-               self::TYPE_OTHER => Yii::t('model', 'TYPE_OTHER'),
-           ),
-            );
-    }
-
-    public function getEnumFieldLabels($column){
-
-        $aLabels = $this->enumLabels();
-        return $aLabels[$column];
-    }
-
-    public function getEnumLabel($column,$value){
-
-        $aLabels = $this->enumLabels();
-
-        if(!isset($aLabels[$column])){
-            return $value;
-        }
-
-        if(!isset($aLabels[$column][$value])){
-            return $value;
-        }
-
-        return $aLabels[$column][$value];
-    }
-
 
     public function searchCriteria($criteria = null)
     {
@@ -132,7 +95,7 @@ abstract class BaseD2files extends CActiveRecord
         }
 
         $criteria->compare('t.id', $this->id, true);
-        $criteria->compare('t.type', $this->type, true);
+        $criteria->compare('t.type_id', $this->type_id);
         $criteria->compare('t.file_name', $this->file_name, true);
         $criteria->compare('t.upload_path', $this->upload_path, true);
         $criteria->compare('t.add_datetime', $this->add_datetime, true);

@@ -4,18 +4,22 @@
 Yii::setPathOfAlias('D2files', dirname(__FILE__));
 Yii::import('D2files.*');
 
-class D2files extends BaseD2files {
+class D2files extends BaseD2files
+{
 
     // Add your model-specific methods here. This file will not be overriden by gtc except you force it.
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__)
+    {
         return parent::model($className);
     }
 
-    public function init() {
+    public function init()
+    {
         return parent::init();
     }
 
-    public function getItemLabel() {
+    public function getItemLabel()
+    {
         return parent::getItemLabel();
     }
 
@@ -27,24 +31,31 @@ class D2files extends BaseD2files {
                 'class' => 'LoggableBehavior'
             ),
         ));
-    }  
-
-    public function rules() {
-        return parent::rules();
-//        return array_merge(
-//            parent::rules(),
-// 			array());
     }
 
-    public function search() {
+    public function rules()
+    {
+        return array_merge(
+            parent::rules()
+        /* , array(
+          array('column1, column2', 'rule1'),
+          array('column3', 'rule2'),
+          ) */
+        );
+    }
+
+    public function search($criteria = null)
+    {
+        if (is_null($criteria)) {
+            $criteria = new CDbCriteria;
+        }
         return new CActiveDataProvider(get_class($this), array(
-            'criteria' => $this->searchCriteria(),
+            'criteria' => $this->searchCriteria($criteria),
         ));
     }
-
+    
     public function afterSave() {
-        $this->addImages();
-
+        
         /**
          * registre file in task
          */
@@ -59,47 +70,6 @@ class D2files extends BaseD2files {
         }
         parent::afterSave();
     }
-
-    public function addImages() {
-        //If we have pending images
-        if (Yii::app()->user->hasState('images')) {
-            $userImages = Yii::app()->user->getState('images');
-            //Resolve the final path for our images
-            $path = Yii::app()->getBasePath() . "/../images/uploads/{$this->id}/";
-            //Create the folder and give permissions if it doesnt exists
-            if (!is_dir($path)) {
-                mkdir($path);
-                chmod($path, 0777);
-            }
-
-            //Now lets create the corresponding models and move the files
-            foreach ($userImages as $image) {
-                if (is_file($image["path"])) {
-                    if (rename($image["path"], $path . $image["filename"])) {
-                        chmod($path . $image["filename"], 0777);
-                        $img = new Image( );
-                        $img->size = $image["size"];
-                        $img->mime = $image["mime"];
-                        $img->name = $image["name"];
-                        $img->source = "/images/uploads/{$this->id}/" . $image["filename"];
-                        $img->somemodel_id = $this->id;
-                        if (!$img->save()) {
-                            //Its always good to log something
-                            Yii::log("Could not save Image:\n" . CVarDumper::dumpAsString(
-                                            $img->getErrors()), CLogger::LEVEL_ERROR);
-                            //this exception will rollback the transaction
-                            throw new Exception('Could not save Image');
-                        }
-                    }
-                } else {
-                    //You can also throw an execption here to rollback the transaction
-                    Yii::log($image["path"] . " is not a file", CLogger::LEVEL_WARNING);
-                }
-            }
-            //Clear the user's session
-            Yii::app()->user->setState('images', null);
-        }
-    }
     
     public function searchExactCriteria($criteria = null)
     {
@@ -108,7 +78,7 @@ class D2files extends BaseD2files {
         }
 
         $criteria->compare('t.id', $this->id);
-        $criteria->compare('t.type', $this->type);
+        $criteria->compare('t.type_id', $this->type_id);
         $criteria->compare('t.file_name', $this->file_name);
         $criteria->compare('t.upload_path', $this->upload_path);
         $criteria->compare('t.add_datetime', $this->add_datetime);
@@ -209,6 +179,5 @@ class D2files extends BaseD2files {
         return true;
 
     }
-    
     
 }

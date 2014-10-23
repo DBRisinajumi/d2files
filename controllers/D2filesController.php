@@ -1,13 +1,17 @@
 <?php
 
-class D2filesController extends Controller {
+
+class D2filesController extends Controller
+{
     #public $layout='//layouts/column2';
 
     public $defaultAction = "admin";
     public $scenario = "crud";
     public $scope = "crud";
 
-    public function filters() {
+
+    public function filters()
+    {
         return array(
             'accessControl',
         );
@@ -33,8 +37,9 @@ class D2filesController extends Controller {
             ),
         );
     }
-
-    public function beforeAction($action) {
+    
+    public function beforeAction($action)
+    {
         parent::beforeAction($action);
         if ($this->module !== null) {
             $this->breadcrumbs[$this->module->Id] = array('/' . $this->module->Id);
@@ -42,18 +47,14 @@ class D2filesController extends Controller {
         return true;
     }
 
-    public function actionView($id) {
+    public function actionView($id, $ajax = false)
+    {
         $model = $this->loadModel($id);
-        $this->render( 'view', array(
-            'model' => $model,
-            'photos' => $photos,
-        ) );        
-        
-        
-        //$this->render('view', array('model' => $model,));
+        $this->render('view', array('model' => $model,));
     }
 
-    public function actionCreate() {
+    public function actionCreate()
+    {
         $model = new D2files;
         $model->scenario = $this->scenario;
 
@@ -80,7 +81,8 @@ class D2filesController extends Controller {
         $this->render('create', array('model' => $model));
     }
 
-    public function actionUpdate($id) {
+    public function actionUpdate($id)
+    {
         $model = $this->loadModel($id);
         $model->scenario = $this->scenario;
 
@@ -102,8 +104,8 @@ class D2filesController extends Controller {
                 $model->addError('id', $e->getMessage());
             }
         }
-
-        $this->render('update', array('model' => $model,));
+        
+        $this->render('update', array('model' => $model));
     }
     
     public function actionUpload($model_name, $model_id) {
@@ -179,13 +181,30 @@ class D2filesController extends Controller {
                         )
         );  
     }
-
-    public function actionEditableSaver() {
+    
+    public function actionEditableSaver()
+    {
         $es = new EditableSaver('D2files'); // classname of model to be updated
         $es->update();
     }
 
-    public function actionDelete($id) {
+    public function actionAjaxCreate($field, $value) 
+    {
+        $model = new D2files;
+        $model->$field = $value;
+        try {
+            if ($model->save()) {
+                return TRUE;
+            }else{
+                return var_export($model->getErrors());
+            }            
+        } catch (Exception $e) {
+            throw new CHttpException(500, $e->getMessage());
+        }
+    }
+    
+    public function actionDelete($id)
+    {
         if (Yii::app()->request->isPostRequest) {
             try {
                 $this->loadModel($id)->delete();
@@ -205,7 +224,8 @@ class D2filesController extends Controller {
         }
     }
 
-    public function actionAdmin() {
+    public function actionAdmin()
+    {
         $model = new D2files('search');
         $scopes = $model->scopes();
         if (isset($scopes[$this->scope])) {
@@ -217,10 +237,11 @@ class D2filesController extends Controller {
             $model->attributes = $_GET['D2files'];
         }
 
-        $this->render('admin', array('model' => $model,));
+        $this->render('admin', array('model' => $model));
     }
-    
-    public function loadModel($id) {
+
+    public function loadModel($id)
+    {
         $m = D2files::model();
         // apply scope, if available
         $scopes = $m->scopes();
@@ -234,7 +255,8 @@ class D2filesController extends Controller {
         return $model;
     }
 
-    protected function performAjaxValidation($model) {
+    protected function performAjaxValidation($model)
+    {
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'd2files-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();

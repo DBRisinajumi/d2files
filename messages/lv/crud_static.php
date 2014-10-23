@@ -34,4 +34,5 @@ return array (
   'The requested page does not exist.' => 'Pieprasītā lapa neeksistē',
   'Update' => 'Labot',
   'View' => 'Skatīt',
+  'Add comment' => 'Pievienot komentāru',
 );
