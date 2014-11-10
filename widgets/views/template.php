@@ -3,36 +3,27 @@
 $sFileListHtml = '<table id="attachment_list" class="items table table-condensed table-bordered">';
 if (D2files::extendedCheckAccess($model . '.downloadD2File', false)) {
     
-    $listData = CHtml::listData(
-        D2filesType::model()->findAll(
-            array(
-                'condition' => 'model = "' . $model . '"',
-                'limit' => 1000
-            )
-        ),
-        'id',
-        'itemLabel'
-    );
-    
-    $t_listData = array();
-    foreach ($listData as $key => $item) {
-        $t_listData[$key] = Yii::t('d2files', $item);
-    }
-    
+    //file list
     foreach ($files as $mfile) {
         
-        $file_type = $this->widget(
-            'EditableField',
-            array(
-                'model' => $mfile,
-                'type' => 'select',
-                'attribute' => 'type_id',
-                'url' => Yii::app()->controller->createUrl('/d2files/d2files/editableSaver'),
-                'source' => $t_listData,
-                'placement' => 'left',
-            ),
-            true
-        );
+        //editable file type
+        $file_type = '';
+        if(!empty($files_types_list)){
+            $file_type = '<td class="file-type">'
+                    . $this->widget(
+                        'EditableField',
+                        array(
+                            'model' => $mfile,
+                            'type' => 'select',
+                            'attribute' => 'type_id',
+                            'url' => Yii::app()->controller->createUrl('/d2files/d2files/editableSaver'),
+                            'source' => $files_types_list,
+                            'placement' => 'left',
+                        ),
+                        true
+                    )
+                    . '</td>';
+        }
         
         $file_delete_ajax_url = '';
         if (D2files::extendedCheckAccess($model . '.deleteD2File', false)) {
@@ -48,9 +39,9 @@ if (D2files::extendedCheckAccess($model . '.downloadD2File', false)) {
 
         $sFileListHtml .= '<tr id="d2file-' . $mfile->id . '">'
                 . '<td><i class="icon-file-text blue"></i> ' . $mfile->file_name . '</td>'
-                . '<td class="file-type">'
+                //. '<td class="file-type">'
                 . $file_type
-                . '</td>'
+                //. '</td>'
                 . '<td class="button-column">'
                 . '<a href="' . $file_download_ajax_url . '" rel="tooltip" title="' . Yii::t("D2filesModule.crud_static", "Download") . '" class="download" data-toggle="tooltip"><i class="icon-download-alt"></i></i></a> '
                 . $file_delete_ajax_url

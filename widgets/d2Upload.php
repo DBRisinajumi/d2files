@@ -9,9 +9,12 @@ class d2Upload extends CWidget {
     public $model_id;
     public $d2files_model;
     public $controler;
+    private $files_types = array();
     
 
 	public function init(){
+        
+        $this->files_types = $this->loadFilesType();
         $this->registerClientScripts();
 	}
 
@@ -26,12 +29,28 @@ class d2Upload extends CWidget {
 
         $this->render($this->template_view, array(
             'files' => $files,
-            'model' => $model_files->model
+            'model' => $model_files->model,
+            'files_types_list' => $this->files_types,
         ));                
 
         
 	}
 
+    private function loadFilesType(){
+        $files_types = D2filesType::model()->findAll(
+            array(
+                'condition' => 'model = "' . $this->model_name . '"',
+                'limit' => 1000
+            ));
+
+        $t_listData = array();
+        foreach ($files_types as $ft) {
+            $t_listData[$ft['id']] = Yii::t('d2files', $ft['type']);
+        }   
+
+        return $t_listData;
+    }
+    
 	private function registerClientScripts() {
         
         $baseUrl = Yii::app()->baseUrl; 
@@ -60,30 +79,34 @@ class d2Upload extends CWidget {
         
         $file_editable_url = $this->controler->createUrl('/d2files/d2files/editableSaver');
         
-        // File type list
-        $listData = CHtml::listData(
-            D2filesType::model()->findAll(
-                array(
-                    'condition' => 'model = "' . $this->model_name . '"',
-                    'limit' => 1000
-                )
-            ),
-            'id',
-            'itemLabel'
-        );
-        
-        $t_listData = array();
-        foreach ($listData as $key => $item) {
-            $t_listData[] = "{'value':" . $key . ",'text':'" . Yii::t('d2files', $item) . "'}";
-        }
-        
-        $s_listData = implode(',', $t_listData);
-        
         $comments_row = '';
         if (D2files::extendedCheckAccess($this->model_name . '.uploadD2File', false)) {
             $comments_row .= '<tr id="d2cmnt-\'+file.id+\'"><td colspan="3">';
             $comments_row .= '<a class="notes_editable" href="#" rel="D2files_notes_\'+file.id+\'" data-pk="\'+file.id+\'"></a>';
             $comments_row .= '</td></tr>';
+        }
+        
+        $file_type_js = '';
+        $file_type_editable = '';
+        
+        if(!empty($this->files_types)){
+            $file_type_js = '+ \'<td class="file-type"><a class="type_editable" href="#" rel="D2files_type_id_\'+file.id+\'" data-pk="\'+file.id+\'"></a></td>\'';
+            $t_listData = array();
+            foreach ($this->files_types as $key => $item) {
+                $t_listData[] = "{'value':" . $key . ",'text':'" . Yii::t('d2files', $item) . "'}";
+            }
+            $s_listData = implode(',', $t_listData);            
+            $file_type_editable = '                        
+                $(\'a.type_editable\').editable({
+                            \'name\':\'type_id\',
+                            \'title\':\'' . Yii::t("editable.editable", "Select") . ' ' . Yii::t("D2filesModule.model", "Type") . '\',
+                            \'url\':\'' . $file_editable_url . '\',
+                            \'type\':\'select\',
+                            \'emptytext\':\'' . Yii::t("editable.editable", "Empty") . '\',
+                            \'params\':{\'scenario\':\'update\'},
+                            \'source\':[' . $s_listData . ']
+                        });
+                        ';            
         }
         
         Yii::app()->clientScript->registerScript('for_fileupload','
@@ -100,7 +123,7 @@ class d2Upload extends CWidget {
                             }
                             var sRow = 
                             \'<tr id="d2file-\'+file.id+\'"><td><i class="icon-file-text blue"></i> \' + file.name + \'</a></td>\'
-                            + \'<td class="file-type"><a class="type_editable" href="#" rel="D2files_type_id_\'+file.id+\'" data-pk="\'+file.id+\'"></a></td>\'
+                            ' . $file_type_js . '
                             + \'<td class="button-column">\'
                             + \'<a href="'.$file_download_ajax_url.'&id=\'+file.id+\'" rel="tooltip" title="'.Yii::t("D2filesModule.crud_static","Download").'" class="download" data-toggle="tooltip"><i class="icon-download-alt"></i></a> \'
                             ' . $file_delete_ajax_url . '
@@ -115,15 +138,7 @@ class d2Upload extends CWidget {
                             }
                         });
                         
-                        $(\'a.type_editable\').editable({
-                            \'name\':\'type_id\',
-                            \'title\':\'' . Yii::t("editable.editable", "Select") . ' ' . Yii::t("D2filesModule.model", "Type") . '\',
-                            \'url\':\'' . $file_editable_url . '\',
-                            \'type\':\'select\',
-                            \'emptytext\':\'' . Yii::t("editable.editable", "Empty") . '\',
-                            \'params\':{\'scenario\':\'update\'},
-                            \'source\':[' . $s_listData . ']
-                        });
+                        ' . $file_type_editable . ' 
                         
                         $(\'a.notes_editable\').editable({
                             \'name\':\'notes\',
