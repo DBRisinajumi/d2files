@@ -3,6 +3,10 @@
 $sFileListHtml = '<table id="attachment_list" class="items table table-condensed table-bordered">';
 if (D2files::extendedCheckAccess($model . '.downloadD2File', false)) {
     
+    $colspan = 3;
+    if(empty($files_types_list)){
+        $colspan = 2;
+    }
     //file list
     foreach ($files as $mfile) {
         
@@ -27,15 +31,11 @@ if (D2files::extendedCheckAccess($model . '.downloadD2File', false)) {
         
         $file_delete_ajax_url = '';
         if (D2files::extendedCheckAccess($model . '.deleteD2File', false)) {
-            $delete_url = $this->controler->createUrl('deleteFile', array(
-                'id' => $mfile->id,
-            ));
+            $delete_url = $this->controler->createUrl('deleteFile', array('id' => $mfile->id),'&amp;');
             $file_delete_ajax_url = '<a href="' . $delete_url . '" rel="tooltip" title="' . Yii::t("D2filesModule.crud_static", "Delete") . '" class="delete" data-toggle="tooltip"><i class="icon-trash"></i></a> ';
         }
 
-        $file_download_ajax_url = $this->controler->createUrl('downloadFile', array(
-            'id' => $mfile->id,
-        ));
+        $file_download_ajax_url = $this->controler->createUrl('downloadFile', array('id' => $mfile->id),'&amp;');
 
         $sFileListHtml .= '<tr id="d2file-' . $mfile->id . '">'
                 . '<td><i class="icon-file-text blue"></i> ' . $mfile->file_name . '</td>'
@@ -43,14 +43,14 @@ if (D2files::extendedCheckAccess($model . '.downloadD2File', false)) {
                 . $file_type
                 //. '</td>'
                 . '<td class="button-column">'
-                . '<a href="' . $file_download_ajax_url . '" rel="tooltip" title="' . Yii::t("D2filesModule.crud_static", "Download") . '" class="download" data-toggle="tooltip"><i class="icon-download-alt"></i></i></a> '
+                . '<a href="' . $file_download_ajax_url . '" rel="tooltip" title="' . Yii::t("D2filesModule.crud_static", "Download") . '" class="download" data-toggle="tooltip"><i class="icon-download-alt"></i></a> '
                 . $file_delete_ajax_url
                 . '</td>'
                 . '</tr>';
         
         if (D2files::extendedCheckAccess($model . '.uploadD2File', false)) {
         
-            $sFileListHtml .= '<tr id="d2cmnt-' . $mfile->id . '"><td colspan="3">';
+            $sFileListHtml .= '<tr id="d2cmnt-' . $mfile->id . '"><td colspan="'.$colspan.'">';
             
             $sFileListHtml .= $this->widget(
                 'EditableField',
@@ -72,7 +72,7 @@ if (D2files::extendedCheckAccess($model . '.downloadD2File', false)) {
 }
 $sFileListHtml .= '</table>';
 
-$file_form = '<form method="post" id="d2FileUploadForm" name="DataForm" action="" enctype="multipart/form-data">' .
+$file_form = '<form method="post" id="d2FileUploadForm" name="DataForm" enctype="multipart/form-data">' .
         '<input id="fileupload" type="file" name="files[]"  multiple />
                                 ' . $sFileListHtml . '
                                 </form>';

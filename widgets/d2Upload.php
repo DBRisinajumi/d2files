@@ -81,7 +81,11 @@ class d2Upload extends CWidget {
         
         $comments_row = '';
         if (D2files::extendedCheckAccess($this->model_name . '.uploadD2File', false)) {
-            $comments_row .= '<tr id="d2cmnt-\'+file.id+\'"><td colspan="3">';
+            if(!empty($this->files_types)){
+                $comments_row .= '<tr id="d2cmnt-\'+file.id+\'"><td colspan="3">';
+            }else{
+                $comments_row .= '<tr id="d2cmnt-\'+file.id+\'"><td colspan="2">';
+            }
             $comments_row .= '<a class="notes_editable" href="#" rel="D2files_notes_\'+file.id+\'" data-pk="\'+file.id+\'"></a>';
             $comments_row .= '</td></tr>';
         }
