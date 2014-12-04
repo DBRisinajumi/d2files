@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Add file' => 'Pievieno failu',
+  'Add file' => 'Pievienot failu',
   'Attachments' => 'Pielikumi',
   'Download' => 'Lejuplādēt',
   'Drop files to upload' => 'Ievelc failu, lai augšuplādētu',

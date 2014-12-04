@@ -29,7 +29,7 @@ class D2filesController extends Controller
             ),
             array(
                 'allow', // allow actions controled by related model to registred users
-                'actions' => array('upload', 'deleteFile', 'downloadFile'),
+                'actions' => array('upload', 'deleteFile', 'downloadFile', 'editableSaver'),
                 'users'=>array('*'),
             ),
             array('deny',
@@ -184,6 +184,25 @@ class D2filesController extends Controller
     
     public function actionEditableSaver()
     {
+        $id = Yii::app()->request->getPost('pk');
+        if(empty($id)){
+            throw new CHttpException(404, Yii::t("D2filesModule.model","The requested record does not exist."));
+        }
+        
+        $m = D2files::model();
+        $model = $m->findByPk($id);
+        if ($model === null) {
+            throw new CHttpException(404, Yii::t("D2filesModule.model","The requested record does not exist."));
+        }
+        
+        // validate read access
+        if (!$this->performReadValidation($model->model, $model->model_id)) {
+            throw new CHttpException(403, Yii::t("D2filesModule.model","You are not authorized to perform this action."));
+        }
+        
+        // validate upload (editable) action access
+        D2files::extendedCheckAccess($model->model . '.uploadD2File');        
+        
         $es = new EditableSaver('D2files'); // classname of model to be updated
         $es->update();
     }
