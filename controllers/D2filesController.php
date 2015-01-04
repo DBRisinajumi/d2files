@@ -114,7 +114,7 @@ class D2filesController extends Controller
         //if (!Yii::app()->user->checkAccess($model_name . '.uploadD2File')) {
         D2files::extendedCheckAccess($model_name . '.uploadD2File');
         
-        if (!$this->performReadValidation($model_name, $model_id)) {
+        if (!$this->performReadValidation($model_name, (int)$model_id)) {
             throw new CHttpException(403, Yii::t("D2filesModule.model","You are not authorized to perform this action."));
         }
 
@@ -122,7 +122,7 @@ class D2filesController extends Controller
         $oUploadHandler = new UploadHandlerD2files(
                         array(
                             'model_name' => $model_name,
-                            'model_id' => $model_id,
+                            'model_id' => (int)$model_id,
                         )
         );
         
@@ -175,7 +175,7 @@ class D2filesController extends Controller
         $oUploadHandler = new UploadHandlerD2files(
                         array(
                             'model_name' => $model->model,
-                            'model_id' => $id,
+                            'model_id' => (int)$id,
                             'download_via_php' => TRUE,
                             'file_name' => $model->file_name,
                         )
