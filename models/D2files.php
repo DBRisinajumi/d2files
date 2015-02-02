@@ -180,4 +180,30 @@ class D2files extends BaseD2files
 
     }
     
+    public static function getFileFullPathByType($model_name,$model_id,$type){
+        
+        /**
+         * get record
+         */
+        $criteria = new CDbCriteria;
+        $criteria->compare('model',$model_name);
+        $criteria->compare('model_id',$model_id);
+        $criteria->compare('type_id',$type);
+        $criteria->compare('deleted',0);
+
+        $d2files = D2files::model()->find($criteria);
+        if(!$d2files){
+            return false;
+        }
+        
+        //get path and saved file name
+        Yii::import( "vendor.dbrisinajumi.d2files.compnents.*");
+        $dir_path = UploadHandlerD2files::getUploadDirPath($model_name);
+        $file_name = UploadHandlerD2files::createSaveFileName($d2files->id, $d2files->file_name);
+        
+        return $dir_path . $file_name;
+        
+        
+    }    
+    
 }
