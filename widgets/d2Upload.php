@@ -126,10 +126,12 @@ class d2Upload extends CWidget {
                                 return;
                             }
                             var sRow = 
-                            \'<tr id="d2file-\'+file.id+\'"><td><i class="icon-file-text blue"></i> \' + file.name + \'</a></td>\'
+                            \'<tr id="d2file-\'+file.id+\'">\'
+                            + \'<td>\'
+                              + \'<a href="'.$file_download_ajax_url.'&id=\'+file.id+\'" rel="tooltip" title="'.Yii::t("D2filesModule.crud_static","Download").'" class="download" data-toggle="tooltip">\'
+                                + \'<i class="icon-file-text blue"></i> \' + file.name + \'</a></td>\'
                             ' . $file_type_js . '
                             + \'<td class="button-column">\'
-                            + \'<a href="'.$file_download_ajax_url.'&id=\'+file.id+\'" rel="tooltip" title="'.Yii::t("D2filesModule.crud_static","Download").'" class="download" data-toggle="tooltip"><i class="icon-download-alt"></i></a> \'
                             ' . $file_delete_ajax_url . '
                             + \'</td>\'
                             + \'</tr>\'

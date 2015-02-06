@@ -38,12 +38,11 @@ if (D2files::extendedCheckAccess($model . '.downloadD2File', false)) {
         $file_download_ajax_url = $this->controler->createUrl('downloadFile', array('id' => $mfile->id),'&amp;');
 
         $sFileListHtml .= '<tr id="d2file-' . $mfile->id . '">'
-                . '<td><i class="icon-file-text blue"></i> ' . $mfile->file_name . '</td>'
+                . '<td><a href="' . $file_download_ajax_url . '" rel="tooltip" title="' . Yii::t("D2filesModule.crud_static", "Download") . '" class="download" data-toggle="tooltip"><i class="icon-file-text blue"></i> ' . $mfile->file_name . '</a></td>'
                 //. '<td class="file-type">'
                 . $file_type
                 //. '</td>'
                 . '<td class="button-column">'
-                . '<a href="' . $file_download_ajax_url . '" rel="tooltip" title="' . Yii::t("D2filesModule.crud_static", "Download") . '" class="download" data-toggle="tooltip"><i class="icon-download-alt"></i></a> '
                 . $file_delete_ajax_url
                 . '</td>'
                 . '</tr>';
