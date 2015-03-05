@@ -149,7 +149,7 @@ class D2files extends BaseD2files
     }    
     
     public static function extendedCheckAccess($authitem,$exception_on = true){
-        $sql = "select * from authitem where `name` = '" .$authitem. "'";
+        $sql = "select * from AuthItem where `name` = '" .$authitem. "'";
         $ai = Yii::app()->db->createCommand($sql)->queryAll();         
         
         //if auth item is defined, use strict validation
