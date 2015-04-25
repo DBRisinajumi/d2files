@@ -38,7 +38,7 @@ php composer.phar require dbrisinajumi/d2files dev-master
          ),  
 	 ),
 ```
-* to config console.php commandMap add
+* to config/console.php under commandMap add
 ```
 	'd2files' => 'vendor.dbrisinajumi.d2files.migrations', 
 ```
