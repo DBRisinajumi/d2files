@@ -38,6 +38,13 @@ php composer.phar require dbrisinajumi/d2files dev-master
          ),  
 	 ),
 ```
+* to config console.php commandMap add
+```
+	'd2files' => 'vendor.dbrisinajumi.d2files.migrations', 
+```
+
+* execute yiic migration
+* in table d2files can define file types for model.
 
 ## Usage
 ### VIEW
