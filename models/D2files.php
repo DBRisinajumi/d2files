@@ -212,6 +212,20 @@ class D2files extends BaseD2files
         
     }    
     
+    public static function getModelRecorFiles($model_name,$model_id,$type = false){
+        
+        /**
+         * get record
+         */
+        $criteria = new CDbCriteria;
+        $criteria->compare('model',$model_name);
+        $criteria->compare('model_id',$model_id);
+        $criteria->compare('type_id',$type);
+        $criteria->compare('deleted',0);
+
+        return D2files::model()->findAll($criteria);
+    }    
+    
     /**
      * get shareable configuration for model
      */    
@@ -253,4 +267,15 @@ class D2files extends BaseD2files
         return hash('sha256',$this->file_name.$this->add_datetime.$this->model_id,$def['salt']);
     }
     
+    public function getShareAbleLink(){
+        //http://depo2.yii/index.php?r=d2files/d2files/downloadShareAbleFile&id=4&h=%D9%C7%C0%2CH%D8%AF%E6%3E%DE%E6%85%1D%E9%EAn%E97%7D%F9%C1BLe%02%A4%E2%C6%5B%40%F4%CD
+        $h = $this->genHashForShareAbleFile();
+        if(!$h){
+            return false;
+        }
+        return '/index.php?'
+            .'r=d2files/d2files/downloadShareAbleFile'
+            .'&id='.$this->id
+            .'&h=' . $h;
+    }
 }
