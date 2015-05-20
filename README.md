@@ -35,6 +35,14 @@ php composer.phar require dbrisinajumi/d2files dev-master
                     'user_roles' => array('Agent','Client'),
                     ),
             ),
+            'shareable_by_link' => [
+                'my_module.my_model' => [
+                    'allow_ip' => [
+                        '127.0.0.1',
+                        ],
+                    'salt' => '1212133243243',
+                ]
+            ]
          ),  
 	 ),
 ```

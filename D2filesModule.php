@@ -7,6 +7,12 @@ class D2filesModule extends CWebModule
     
     public $registre_tasks_to_models = false;
     
+    /**
+     * define model files, what sharable by link
+     * @var array 
+     */
+    public $shareable_by_link = false;
+    
 	public function init()
 	{
 		// this method is called when the module is being created
@@ -30,4 +36,5 @@ class D2filesModule extends CWebModule
 		else
 			return false;
 	}
+    
 }

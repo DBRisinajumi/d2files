@@ -29,7 +29,8 @@ class D2filesController extends Controller
             ),
             array(
                 'allow', // allow actions controled by related model to registred users
-                'actions' => array('upload', 'deleteFile', 'downloadFile', 'editableSaver'),
+                'actions' => array('upload', 'deleteFile', 'downloadFile',
+                                     'editableSaver','downloadShareAbleFile'),
                 'users'=>array('*'),
             ),
             array('deny',
@@ -144,7 +145,6 @@ class D2filesController extends Controller
         }
         
         // validate delete action access
-        //if (!Yii::app()->user->checkAccess($model->model . '.deleteD2File')) {
         D2files::extendedCheckAccess($model->model . '.deleteD2File');
         
         $model->deleted = 1;
@@ -163,7 +163,6 @@ class D2filesController extends Controller
         }
 
         // validate download action access
-        //if (!Yii::app()->user->checkAccess($model->model . '.downloadD2File')) {
         D2files::extendedCheckAccess($model->model . '.downloadD2File');
         
         // validate read access
@@ -182,6 +181,66 @@ class D2filesController extends Controller
         );  
     }
     
+    /**
+     * allow download shareable files
+     * @param int $id d2diles.id
+     * @param string $h file hash
+     * @throws CHttpException
+     */
+    public function actionDownloadShareAbleFile($id,$h) {
+        
+        /**
+         * load d2files model
+         */
+        $criteria = new CDbCriteria;
+        $criteria->compare('t.deleted', 0);
+        $m = D2files::model();
+        $model = $m->findByPk($id, $criteria);
+        if ($model === null) {
+            throw new CHttpException(404, Yii::t("D2filesModule.model","The requested record does not exist."));
+        }
+        
+        /**
+         * validate IP
+         */
+        $def = $model->getShareAbleDef();
+        if(isset($def['allow_ip'])){
+            $allow_ip = false;
+            $user_ip = Yii::app()->request->getUserHostAddress();
+            foreach($def['allow_ip'] as $ip){
+                if($ip == $user_ip){
+                    $allow_ip = true;
+                    break;
+                }
+                if (!$allow_ip) {
+                    throw new CHttpException(404, Yii::t("D2filesModule.model","The requested record does not exist."));
+                }                
+            }
+        }
+        
+        /**
+         * get hash and validate
+         */
+        $calc_hash = $model->genHashForShareAbleFile();
+        if(!$calc_hash || $calc_hash != $h){
+            throw new CHttpException(404, Yii::t("D2filesModule.model","The requested record does not exist."));            
+        }
+        
+        /**
+         * download file
+         */
+        Yii::import( "vendor.dbrisinajumi.d2files.compnents.*");
+        $oUploadHandler = new UploadHandlerD2files(
+                        array(
+                            'model_name' => $model->model,
+                            'model_id' => (int)$id,
+                            'download_via_php' => TRUE,
+                            'file_name' => $model->file_name,
+                        )
+        );  
+    }
+    
+        
     public function actionEditableSaver()
     {
         $id = Yii::app()->request->getPost('pk');

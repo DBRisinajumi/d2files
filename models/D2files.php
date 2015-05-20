@@ -7,6 +7,12 @@ Yii::import('D2files.*');
 class D2files extends BaseD2files
 {
 
+    /**
+     * shareable definition for model
+     * @var type 
+     */
+    public $shareable_def = false;
+    
     // Add your model-specific methods here. This file will not be overriden by gtc except you force it.
     public static function model($className = __CLASS__)
     {
@@ -205,5 +211,46 @@ class D2files extends BaseD2files
         
         
     }    
+    
+    /**
+     * get shareable configuration for model
+     */    
+    public function getShareAbleDef(){
+        if(!$this->shareable_def){
+            $shareable = Yii::app()->getModule('d2files')->shareable_by_link;
+            $is_model_shareable = false;
+            foreach ($shareable as $sh_model => $def){
+                if($sh_model == $this->model){
+                    $this->shareable_def = $def;
+                    break;
+                }
+            }
+            
+        }
+        return $this->shareable_def;
+    }
+
+
+    /**
+     * generate hash for shareable files
+     * @return boolean
+     */
+    public function genHashForShareAbleFile(){
+
+        $def = $this->getShareAbleDef();
+        if(!$def){
+            return false;
+        }
+
+        /**
+         * create hash with salt
+         */
+        $salt = 'd2filessalt';
+        if(isset($def['salt'])){
+            $salt = 'd2filessalt';            
+        }
+        
+        return hash('sha256',$this->file_name.$this->add_datetime.$this->model_id,$def['salt']);
+    }
     
 }
