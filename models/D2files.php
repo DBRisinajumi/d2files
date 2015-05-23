@@ -212,15 +212,21 @@ class D2files extends BaseD2files
         
     }    
     
+    /**
+     * get model record files
+     * @param string $model_name model name in format [module name].[model name]
+     * @param int $model_id record is
+     * @param int $type attachment type
+     * @return array d2files models
+     */
     public static function getModelRecorFiles($model_name,$model_id,$type = false){
         
-        /**
-         * get record
-         */
         $criteria = new CDbCriteria;
         $criteria->compare('model',$model_name);
         $criteria->compare('model_id',$model_id);
-        $criteria->compare('type_id',$type);
+        if($type){
+            $criteria->compare('type_id',$type);
+        }
         $criteria->compare('deleted',0);
 
         return D2files::model()->findAll($criteria);
@@ -232,7 +238,6 @@ class D2files extends BaseD2files
     public function getShareAbleDef(){
         if(!$this->shareable_def){
             $shareable = Yii::app()->getModule('d2files')->shareable_by_link;
-            $is_model_shareable = false;
             foreach ($shareable as $sh_model => $def){
                 if($sh_model == $this->model){
                     $this->shareable_def = $def;
