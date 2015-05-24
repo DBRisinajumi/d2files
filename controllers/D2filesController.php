@@ -19,6 +19,11 @@ class D2filesController extends Controller
 
     public function accessRules() {
         return array(
+            array(
+                'allow', // allow actions controled by related model to registred users
+                'actions' => array('downloadShareAbleFile'),
+                'users'=>array('?'),
+            ),            
             array('deny', // deny guests
                 'users'=>array('?'),
             ),
@@ -188,6 +193,7 @@ class D2filesController extends Controller
      * @throws CHttpException
      */
     public function actionDownloadShareAbleFile($id,$h) {
+
         
         /**
          * load d2files model
@@ -199,7 +205,7 @@ class D2filesController extends Controller
         if ($model === null) {
             throw new CHttpException(404, Yii::t("D2filesModule.model","The requested record does not exist."));
         }
-        
+
         /**
          * validate IP
          */
@@ -216,7 +222,7 @@ class D2filesController extends Controller
                     throw new CHttpException(404, Yii::t("D2filesModule.model","The requested record does not exist."));
                 }                
             }
-        }
+        }            
         
         /**
          * get hash and validate
