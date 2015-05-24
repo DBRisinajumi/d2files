@@ -19,16 +19,6 @@ class D2files extends BaseD2files
         return parent::model($className);
     }
 
-    public function init()
-    {
-        return parent::init();
-    }
-
-    public function getItemLabel()
-    {
-        return parent::getItemLabel();
-    }
-
     public function behaviors() {
         return array_merge(
                 parent::behaviors(), array(
@@ -37,17 +27,6 @@ class D2files extends BaseD2files
                 'class' => 'LoggableBehavior'
             ),
         ));
-    }
-
-    public function rules()
-    {
-        return array_merge(
-            parent::rules()
-        /* , array(
-          array('column1, column2', 'rule1'),
-          array('column3', 'rule2'),
-          ) */
-        );
     }
 
     public function search($criteria = null)
@@ -186,6 +165,13 @@ class D2files extends BaseD2files
 
     }
     
+    /**
+     * get first file full path for model record with requested type
+     * @param string $model_name model name in format [module_name].[model_name]
+     * @param int $model_id model record id
+     * @param int $type file type
+     * @return string/boolean
+     */
     public static function getFileFullPathByType($model_name,$model_id,$type){
         
         /**
@@ -202,11 +188,16 @@ class D2files extends BaseD2files
             return false;
         }
         
-        //get path and saved file name
+        /**
+         * get path and saved file name
+         */
         Yii::import( "vendor.dbrisinajumi.d2files.compnents.*");
         $dir_path = UploadHandlerD2files::getUploadDirPath($model_name);
         $file_name = UploadHandlerD2files::createSaveFileName($d2files->id, $d2files->file_name);
         
+        /**
+         * return full path
+         */
         return $dir_path . $file_name;
         
         
@@ -233,7 +224,8 @@ class D2files extends BaseD2files
     }    
     
     /**
-     * get shareable configuration for model
+     * get shareable configuration for actual model
+     * @return array
      */    
     public function getShareAbleDef(){
         if(!$this->shareable_def){
@@ -251,36 +243,59 @@ class D2files extends BaseD2files
 
 
     /**
-     * generate hash for shareable files
+     * generate hash for shareable file
      * @return boolean
      */
     public function genHashForShareAbleFile(){
 
+        /**
+         * get shareable file configuration for actual model
+         */
         $def = $this->getShareAbleDef();
+        
+        /**
+         * shareable file must be defined in d2files config
+         */
         if(!$def){
             return false;
         }
 
         /**
-         * create hash with salt
+         * get salt
          */
         $salt = 'd2filessalt';
         if(isset($def['salt'])){
             $salt = 'd2filessalt';            
         }
         
+        /**
+         * create hash with salt
+         */        
         return hash('sha256',$this->file_name.$this->add_datetime.$this->model_id,$def['salt']);
     }
     
+    /**
+     * create url for shareable file (must be defined in d2files configuration
+     * Example: http://depo2.yii/index.php?r=d2files/d2files/downloadShareAbleFile&id=4&h=%D9%C7%C0%2CH%D8%AF%E6%3E%DE%E6%85%1D%E9%EAn%E97%7D%F9%C1BLe%02%A4%E2%C6%5B%40%F4%CD
+     * @return string/boolean 
+     */
     public function getShareAbleLink(){
-        //http://depo2.yii/index.php?r=d2files/d2files/downloadShareAbleFile&id=4&h=%D9%C7%C0%2CH%D8%AF%E6%3E%DE%E6%85%1D%E9%EAn%E97%7D%F9%C1BLe%02%A4%E2%C6%5B%40%F4%CD
+        
         $h = $this->genHashForShareAbleFile();
+        
+        /**
+         * shareable file must be defined in d2files config
+         */        
         if(!$h){
             return false;
         }
+        
+        /**
+         * create full link
+         */
         return '/index.php?'
             .'r=d2files/d2files/downloadShareAbleFile'
             .'&id='.$this->id
-            .'&h=' . $h;
+            .'&h=' . urlencode($h);
     }
 }
