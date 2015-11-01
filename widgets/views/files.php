@@ -1,9 +1,12 @@
-<div class="table-header">
-    <i class="icon-paperclip"></i>
-<?php echo Yii::t('D2filesModule.crud_static', 'Attachments'); ?>
+<?php 
+if(!$hideTitle){
+?>
+<div class="table-header header-color-purple">
+    <i class="icon-<?php echo $icon; ?>"></i>
+<?php echo $title; ?>
 </div>
 <?php
-    
+}    
     $this->widget(
         'TbDetailView', array(
         'data' => $model,
@@ -38,4 +41,4 @@
             ),
         ),
     ));
-?>
+

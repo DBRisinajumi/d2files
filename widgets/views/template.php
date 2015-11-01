@@ -72,7 +72,7 @@ if (D2files::extendedCheckAccess($model . '.downloadD2File', false)) {
 $sFileListHtml .= '</table>';
 
 $file_form = '<form method="post" id="d2FileUploadForm" name="DataForm" enctype="multipart/form-data">' .
-        '<input id="fileupload" type="file" name="files[]"  multiple />
+        '<input id="fileupload" type="file" name="files[]"  style="display: none;" multiple />
                                 ' . $sFileListHtml . '
                                 </form>';
 
