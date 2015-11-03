@@ -1,7 +1,7 @@
 <?php 
 if(!$hideTitle){
 ?>
-<div class="table-header header-color-purple">
+<div class="table-header header-color-blue">
     <i class="icon-<?php echo $icon; ?>"></i>
 <?php echo $title; ?>
 </div>
@@ -32,7 +32,7 @@ if(!$hideTitle){
                     "icon"=>"icon-upload-alt",
                     'htmlOptions' => array(
                         'data-toggle' => 'modal',
-                        'onclick' => '$("#fileupload").trigger("click");'
+                        'onclick' => '$("#fileupload_'.$this->getId().'").trigger("click");'
                      ),
 
                 ),true)

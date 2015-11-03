@@ -113,12 +113,12 @@ class d2Upload extends CWidget {
                         ';            
         }
         
-        Yii::app()->clientScript->registerScript('for_fileupload','
-                $("#fileupload").hide();
-                $("#fileupload").fileupload({
+        Yii::app()->clientScript->registerScript('for_fileupload_'.$this->getId(),'
+                $("#fileupload_'.$this->getId().'").hide();
+                $("#fileupload_'.$this->getId().'").fileupload({
                     dataType: "json",
                     url : "'.$file_upload_ajax_url.'",                    
-                    dropZone : "tr.dropZone",
+                    dropZone : "#dropZone_'.$this->getId().'",
                     done: function (e, data) {
                         $.each(data.result, function (index, file) {
                             if (file.error != undefined && file.error != "") {
@@ -137,10 +137,10 @@ class d2Upload extends CWidget {
                             + \'</tr>\'
                             + \'' . $comments_row . '\'
                             ;
-                            if ($("#attachment_list tr").length > 0) {
-                                $("#attachment_list tr:last").after(sRow);
+                            if ($("#attachment_list_'.$this->getId().' tr").length > 0) {
+                                $("#attachment_list_'.$this->getId().' tr:last").after(sRow);
                             } else {
-                                $("#attachment_list").append(sRow);
+                                $("#attachment_list_'.$this->getId().'").append(sRow);
                             }
                         });
                         
@@ -158,7 +158,7 @@ class d2Upload extends CWidget {
                         
                     }
             });
-            $("#attachment_list").on( "click", "a.delete", function() {
+            $("#attachment_list_'.$this->getId().'").on( "click", "a.delete", function() {
                 if (!confirm("' . Yii::t("D2filesModule.crud", "Do you want to delete this item?") . '")) {
                     return false;
                 }

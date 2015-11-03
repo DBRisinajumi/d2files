@@ -1,6 +1,6 @@
 <?php
 
-$sFileListHtml = '<table id="attachment_list" class="items table table-condensed table-bordered">';
+$sFileListHtml = '<table id="attachment_list_'.$this->getId().'" class="items table table-condensed table-bordered">';
 if (D2files::extendedCheckAccess($model . '.downloadD2File', false)) {
     
     $colspan = 3;
@@ -71,12 +71,12 @@ if (D2files::extendedCheckAccess($model . '.downloadD2File', false)) {
 }
 $sFileListHtml .= '</table>';
 
-$file_form = '<form method="post" id="d2FileUploadForm" name="DataForm" enctype="multipart/form-data">' .
-        '<input id="fileupload" type="file" name="files[]"  style="display: none;" multiple />
+$file_form = '<form method="post" id="d2FileUploadForm_'.$this->getId().'" name="DataForm" enctype="multipart/form-data">' .
+        '<input id="fileupload_'.$this->getId().'" type="file" name="files[]"  style="display: none;" multiple />
                                 ' . $sFileListHtml . '
                                 </form>';
 
 if (D2files::extendedCheckAccess($model . '.uploadD2File', false)) {
-    echo "<tr class=\"dropZone\" style=\"border: 3px dashed #ccc;\"><th style=\"vertical-align: middle; width: 220px; padding-left:10px;\"><span class=\"bigger-110 bolder\"><i class=\"icon-cloud-upload grey\"></i> {label}</span></th><td>{value}</td></tr>\n";
+    echo "<tr id=\"dropZone_".$this->getId()."\" style=\"border: 3px dashed #ccc;\"><th style=\"vertical-align: middle; width: 220px; padding-left:10px;\"><span class=\"bigger-110 bolder\"><i class=\"icon-cloud-upload grey\"></i> {label}</span></th><td>{value}</td></tr>\n";
 }
 echo "<tr><td colspan=\"2\">" . $file_form . "</td></tr>\n";

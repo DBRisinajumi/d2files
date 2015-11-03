@@ -17,7 +17,7 @@ class d2FilesWidget extends CWidget
             $this->title = Yii::t('D2filesModule.crud_static', 'Attachments');
         }
         if($this->icon === false){
-            $this->title = "paperclip";
+            $this->icon = "paperclip";
         }
         $controller = new D2filesController('d2files/d2files');
         $this->render('files',array(
