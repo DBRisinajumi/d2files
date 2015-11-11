@@ -3,7 +3,7 @@ if(!$hideTitle){
 ?>
 <div class="table-header header-color-blue">
     <i class="icon-<?php echo $icon; ?>"></i>
-<?php echo $title; ?>
+    <?php echo $title; ?>
 </div>
 <?php
 }    
@@ -22,8 +22,7 @@ if(!$hideTitle){
                         //'model_name'=> Yii::app()->controller->id,
                         'model_id' => $model->getPrimaryKey(),
                         'controler' => $controller,
-
-
+                        'readOnly' => $readOnly,
                         ),
                     true
                     ),
@@ -34,6 +33,7 @@ if(!$hideTitle){
                         'data-toggle' => 'modal',
                         'onclick' => '$("#fileupload_'.$this->getId().'").trigger("click");'
                      ),
+                    'visible' => !$readOnly
 
                 ),true)
                 ,

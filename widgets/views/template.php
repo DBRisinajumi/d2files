@@ -23,6 +23,7 @@ if (D2files::extendedCheckAccess($model . '.downloadD2File', false)) {
                             'url' => Yii::app()->controller->createUrl('/d2files/d2files/editableSaver'),
                             'source' => $files_types_list,
                             'placement' => 'left',
+                            'apply' =>  $readOnly,
                         ),
                         true
                     )
@@ -30,7 +31,7 @@ if (D2files::extendedCheckAccess($model . '.downloadD2File', false)) {
         }
         
         $file_delete_ajax_url = '';
-        if (D2files::extendedCheckAccess($model . '.deleteD2File', false)) {
+        if (!$readOnly && D2files::extendedCheckAccess($model . '.deleteD2File', false)) {
             $delete_url = $this->controler->createUrl('deleteFile', array('id' => $mfile->id),'&amp;');
             $file_delete_ajax_url = '<a href="' . $delete_url . '" rel="tooltip" title="' . Yii::t("D2filesModule.crud_static", "Delete") . '" class="delete" data-toggle="tooltip"><i class="icon-trash"></i></a> ';
         }
@@ -39,9 +40,7 @@ if (D2files::extendedCheckAccess($model . '.downloadD2File', false)) {
 
         $sFileListHtml .= '<tr id="d2file-' . $mfile->id . '">'
                 . '<td><a href="' . $file_download_ajax_url . '" rel="tooltip" title="' . Yii::t("D2filesModule.crud_static", "Download") . '" class="download" data-toggle="tooltip"><i class="icon-file-text blue"></i> ' . $mfile->file_name . '</a></td>'
-                //. '<td class="file-type">'
                 . $file_type
-                //. '</td>'
                 . '<td class="button-column">'
                 . $file_delete_ajax_url
                 . '</td>'
@@ -59,6 +58,7 @@ if (D2files::extendedCheckAccess($model . '.downloadD2File', false)) {
                     'url' => Yii::app()->controller->createUrl('/d2files/d2files/editableSaver'),
                     'emptytext' => Yii::t("D2filesModule.crud_static", "Add comment"),
                     'placement' => 'right',
+                    'apply' =>  !$readOnly,
                 ),
                 true
             );
@@ -76,7 +76,7 @@ $file_form = '<form method="post" id="d2FileUploadForm_'.$this->getId().'" name=
                                 ' . $sFileListHtml . '
                                 </form>';
 
-if (D2files::extendedCheckAccess($model . '.uploadD2File', false)) {
+if (!$readOnly && D2files::extendedCheckAccess($model . '.uploadD2File', false)) {
     echo "<tr id=\"dropZone_".$this->getId()."\" style=\"border: 3px dashed #ccc;\"><th style=\"vertical-align: middle; width: 220px; padding-left:10px;\"><span class=\"bigger-110 bolder\"><i class=\"icon-cloud-upload grey\"></i> {label}</span></th><td>{value}</td></tr>\n";
 }
 echo "<tr><td colspan=\"2\">" . $file_form . "</td></tr>\n";

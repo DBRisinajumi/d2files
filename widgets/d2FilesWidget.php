@@ -10,6 +10,7 @@ class d2FilesWidget extends CWidget
     public $title = false;
     public $icon = false;
     public $hideTitle = false;
+    public $readOnly = false;
     
     public function run()
     {
@@ -27,6 +28,7 @@ class d2FilesWidget extends CWidget
             'controller' => $controller,
             'model_name' => $this->module . '.' . get_class($this->model),
             'model' => $this->model,
+            'readOnly' => $this->readOnly,
         ));
     }
 }
