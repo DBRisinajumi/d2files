@@ -10,8 +10,13 @@ class d2Upload extends CWidget {
     public $d2files_model;
     public $controler;
     public $readOnly = false;
+    public $widgetId = false;
     private $files_types = array();
     
+    public function getId($autoGenerate=true)
+	{
+        return $this->widgetId;
+	}    
 
 	public function init(){
         
