@@ -203,7 +203,18 @@ class D2files extends BaseD2files
         
     }    
     
-    /**
+    public function getFileFullPath(){
+        Yii::import( "vendor.dbrisinajumi.d2files.compnents.*");
+        $dir_path = UploadHandlerD2files::getUploadDirPath($this->model);
+        $file_name = UploadHandlerD2files::createSaveFileName($this->id, $this->file_name);        
+        
+        /**
+         * return full path
+         */
+        return $dir_path . $file_name;        
+    }
+
+        /**
      * get model record files
      * @param string $model_name model name in format [module name].[model name]
      * @param int $model_id record is
