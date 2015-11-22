@@ -23,6 +23,7 @@ if(!$hideTitle){
                         'model_id' => $model->getPrimaryKey(),
                         'controler' => $controller,
                         'readOnly' => $readOnly,
+                        'widgetId' => $this->getId(),
                         ),
                     true
                     ),
