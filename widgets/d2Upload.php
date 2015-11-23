@@ -156,7 +156,7 @@ class d2Upload extends CWidget {
 
                             $(\'a.notes_editable\').editable({
                                 \'name\':\'notes\',
-                                \'title\':\'' . Yii::t("editable.editable", "Enter") . ' ' . Yii::t("D2filesModule.model", "Notes") . '\',
+                                \'title\':\'' . Yii::t("D2filesModule.editable", "Enter") . ' ' . Yii::t("D2filesModule.model", "Notes") . '\',
                                 \'url\':\'' . $file_editable_url . '\',
                                 \'type\':\'textarea\',
                                 \'placement\':\'right\',
