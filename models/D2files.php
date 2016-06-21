@@ -200,6 +200,48 @@ class D2files extends BaseD2files
          */
         return $dir_path . $file_name;
         
+    }    
+    
+    /**
+     * get files list model record with requested type
+     * @param string $model_name model name in format [module_name].[model_name]
+     * @param int $model_id model record id
+     * @param int $type file type
+     * @return string/boolean
+     */
+    public static function getListFileFullPathByType($model_name,$model_id,$type){
+        
+        /**
+         * get record
+         */
+        $criteria = new CDbCriteria;
+        $criteria->compare('model',$model_name);
+        $criteria->compare('model_id',$model_id);
+        $criteria->compare('type_id',$type);
+        $criteria->compare('deleted',0);
+
+        $d2files = D2files::model()->findAll($criteria);
+        if(!$d2files){
+            return [];
+        }
+        
+        /**
+         * get path and saved file name
+         */
+        Yii::import( "vendor.dbrisinajumi.d2files.compnents.*");
+        $dir_path = UploadHandlerD2files::getUploadDirPath($model_name);        
+
+        $filesList = [];
+        foreach($d2files as $file){
+            $file_name = UploadHandlerD2files::createSaveFileName($file->id, $file->file_name);
+            $filesList[$file->id] = [
+                'name' => $file->file_name,
+                'path' => $dir_path . $file_name,
+                ];
+            
+        }
+
+        return $filesList;
         
     }    
     

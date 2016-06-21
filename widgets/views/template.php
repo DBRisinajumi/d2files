@@ -2,7 +2,6 @@
 
 $sFileListHtml = '<table id="attachment_list_'.$this->getId().'" class="items table table-condensed table-bordered">';
 if (D2files::extendedCheckAccess($model . '.downloadD2File', false)) {
-    
     $colspan = 3;
     if(empty($files_types_list)){
         $colspan = 2;
@@ -13,8 +12,9 @@ if (D2files::extendedCheckAccess($model . '.downloadD2File', false)) {
         //editable file type
         $file_type = '';
         if(!empty($files_types_list)){
-            $file_type = '<td class="file-type">'
-                    . $this->widget(
+            $file_type_html = '';
+            if($readOnly){
+                $file_type_html = $this->widget(
                         'EditableField',
                         array(
                             'model' => $mfile,
@@ -23,11 +23,13 @@ if (D2files::extendedCheckAccess($model . '.downloadD2File', false)) {
                             'url' => Yii::app()->controller->createUrl('/d2files/d2files/editableSaver'),
                             'source' => $files_types_list,
                             'placement' => 'left',
-                            'apply' =>  $readOnly,
                         ),
                         true
-                    )
-                    . '</td>';
+                    ); 
+            }elseif($mfile->type_id){
+                $file_type_html = $files_types_list[$mfile->type_id];
+            }
+            $file_type = '<td class="file-type">' . $file_type_html . '</td>';
         }
         
         $file_delete_ajax_url = '';
