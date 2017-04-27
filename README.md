@@ -63,7 +63,8 @@ php composer.phar require dbrisinajumi/d2files dev-master
         'title'=> 'Wiget Title',
         'icon' => false,
         'hideTitle' => false,
-        'readOnly' = false,
+        'readOnly' => false,
+        'showImagesTypes' => '/\.(gif|jpe?g|png)$/i'
         ]
         );
 ```

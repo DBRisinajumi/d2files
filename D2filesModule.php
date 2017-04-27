@@ -6,7 +6,7 @@ class D2filesModule extends CWebModule
     public $accept_file_types = '/\.(gif|pdf|dat|jpe?g|png)$/i';
     
     public $registre_tasks_to_models = false;
-    
+
     /**
      * define model files, what sharable by link
      * @var array 

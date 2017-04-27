@@ -24,6 +24,7 @@ if(!$hideTitle){
                         'controler' => $controller,
                         'readOnly' => $readOnly,
                         'widgetId' => $this->getId(),
+                        'showImagesTypes' => $showImagesTypes,
                         ),
                     true
                     ),

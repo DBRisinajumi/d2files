@@ -11,7 +11,9 @@ class d2Upload extends CWidget {
     public $controler;
     public $readOnly = false;
     public $widgetId = false;
+    public $showImagesTypes = false;
     private $files_types = array();
+
     
     public function getId($autoGenerate=true)
 	{
@@ -38,6 +40,7 @@ class d2Upload extends CWidget {
             'model' => $model_files->model,
             'files_types_list' => $this->files_types,
             'readOnly' => $this->readOnly,
+            'showImagesTypes' => $this->showImagesTypes
         ));                
 
         
