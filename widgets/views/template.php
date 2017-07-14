@@ -93,4 +93,4 @@ $file_form = '<form method="post" id="d2FileUploadForm_'.$this->getId().'" name=
 if (!$readOnly && D2files::extendedCheckAccess($model . '.uploadD2File', false)) {
     echo "<tr id=\"dropZone_".$this->getId()."\" style=\"border: 3px dashed #ccc;\"><th style=\"vertical-align: middle; width: 220px; padding-left:10px;\"><span class=\"bigger-110 bolder\"><i class=\"icon-cloud-upload grey\"></i> {label}</span></th><td>{value}</td></tr>\n";
 }
-echo "<tr><td colspan=\"2\">" . $file_form . "</td></tr>\n";
+echo "<tr><td>" . $file_form . "</td></tr>\n";
