@@ -12,6 +12,7 @@ class d2FilesWidget extends CWidget
     public $hideTitle = false;
     public $readOnly = false;
     public $showImagesTypes = false;
+    public $showFileNames = true;
 
     public function run()
     {
@@ -31,6 +32,7 @@ class d2FilesWidget extends CWidget
             'model' => $this->model,
             'readOnly' => $this->readOnly,
             'showImagesTypes' => $this->showImagesTypes,
+            'showFileNames' => $this->showFileNames,
         ));
     }
 }

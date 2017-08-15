@@ -25,6 +25,7 @@ if(!$hideTitle){
                         'readOnly' => $readOnly,
                         'widgetId' => $this->getId(),
                         'showImagesTypes' => $showImagesTypes,
+                        'showFileNames' => $showFileNames,
                         ),
                     true
                     ),

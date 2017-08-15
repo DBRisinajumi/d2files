@@ -46,12 +46,17 @@ if (D2files::extendedCheckAccess($model . '.downloadD2File', false)) {
 
         }
 
+        $fileNameDownload = '';
+        if($showFileNames){
+            $fileNameDownload = '<a href="' . $file_download_ajax_url . '" rel="tooltip" title="' . Yii::t("D2filesModule.crud_static", "Download") . '" class="download" data-toggle="tooltip">'
+                .'<i class="icon-file-text blue"></i> '
+                . $mfile->file_name
+                . '</a>';
+        }
+
         $sFileListHtml .= '<tr id="d2file-' . $mfile->id . '">'
                 . '<td>'
-                    .'<a href="' . $file_download_ajax_url . '" rel="tooltip" title="' . Yii::t("D2filesModule.crud_static", "Download") . '" class="download" data-toggle="tooltip">'
-                        .'<i class="icon-file-text blue"></i> '
-                        . $mfile->file_name
-                    . '</a>'
+                    . $fileNameDownload
                     . $imageHtml
                     .'</td>'
                 . $file_type
