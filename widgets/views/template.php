@@ -42,7 +42,7 @@ if (D2files::extendedCheckAccess($model . '.downloadD2File', false)) {
 
         $imageHtml = '';
         if($showImagesTypes && preg_match($showImagesTypes,$mfile->file_name)){
-            $imageHtml = '<img src="' . $file_download_ajax_url . '">';
+            $imageHtml = '<a data-fancybox="gallery" href="' . $file_download_ajax_url . '"><img style=" width: 100px;" src="' . $file_download_ajax_url . '"></a>';
 
         }
 
