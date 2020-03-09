@@ -80,13 +80,7 @@ class UploadHandlerD2files extends UploadHandler {
                 // save file
                 $save_file_name = self::createSaveFileName($nFileId,$sFileName);
                 $info[] = $this->handle_file_upload(
-                        $upload['tmp_name'][$index], 
-                        $save_file_name, 
-                        $size ? $size : $upload['size'][$index], 
-                        'dat', 
-                        $upload['error'][$index], 
-                        $index, 
-                        $content_range
+                    $upload['tmp_name'][$index], $save_file_name, $size ? $size : $upload['size'][$index], 'dat', $upload['error'][$index], $index, $content_range
                 );
                 if (!empty($info[count($info) - 1]->error)) {
                     $this->deleteFile($nFileId, 'Error: ' . $info[count($info) - 1]->error);
@@ -104,8 +98,8 @@ class UploadHandlerD2files extends UploadHandler {
             $nFileId = $this->saveToDb($sFileName, $this->options['model_name'], $this->options['model_id']);
             $save_file_name = self::createSaveFileName($nFileId,$sFileName);
             $info[] = $this->handle_file_upload(
-                    isset($upload['tmp_name']) ? $upload['tmp_name'] : null, $file_name, $size ? $size : (isset($upload['size']) ? $upload['size'] :
-                                    $_SERVER['CONTENT_LENGTH']), $file_type ? $file_type : (isset($upload['type']) ? $upload['type'] : $_SERVER['CONTENT_TYPE']), isset($upload['error']) ? $upload['error'] : null, null, $content_range
+                isset($upload['tmp_name']) ? $upload['tmp_name'] : null, $file_name, $size ? $size : (isset($upload['size']) ? $upload['size'] :
+                $_SERVER['CONTENT_LENGTH']), $file_type ? $file_type : (isset($upload['type']) ? $upload['type'] : $_SERVER['CONTENT_TYPE']), isset($upload['error']) ? $upload['error'] : null, null, $content_range
             );
             if (!empty($info[count($info) - 1]->error)) {
                 $this->deleteFile($nFileId, 'Error: ' . $info[count($info) - 1]->error);
