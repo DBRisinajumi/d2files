@@ -12,7 +12,7 @@
     ],
     "require": {
         "php": ">=5.3.2",
-        "blueimp/jquery-file-upload": "v9.34.0",
+        "blueimp/jquery-file-upload": ">=v10.32.0",
         "dbrisinajumi/audittrail": "2.1.*"
     }
 }
